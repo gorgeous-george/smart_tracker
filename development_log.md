@@ -1,7 +1,7 @@
 ***
 ### 1. Planning
 - analysis of the project purpose and architecture
-- drafting models, views, page templates
+- drafting apps (modules), data models, views, page templates
 
 ***
 ### 2. Creation of project environment
@@ -16,8 +16,11 @@
 ***
 #### 2.1 Installing Django
 
-- create separate folder that will contain django app particularly
-- activate virtual environment
+- create separate folder "tracker_core" that will contain a core django app
+- go to created directory and activate virtual environment
+```
+source .venv/bin/activate
+```
 - update pip for future use
 - install Django framework and initial libraries, creating "requirements.txt"
 - start django project named "core"
@@ -31,7 +34,7 @@ $ python manage.py runserver
 ***
 #### 2.2 Installing Docker
 
-- open the terminal on Ubuntu
+- open terminal on Ubuntu
 - remove any Docker files that are running in the system
 - check if the system is up-to-date
 - install Docker
@@ -55,7 +58,7 @@ $ sudo docker ps
 ```
 
 That's it, Docker is successfully installed on Ubuntu!
-It is useful to follow the post-installation steps
+It is useful to follow the post-installation steps (sudo privs, etc)
 https://docs.docker.com/engine/install/linux-postinstall/
 
 ***
@@ -65,7 +68,7 @@ https://docs.docker.com/engine/install/linux-postinstall/
 - create and configure SSH keys
 - configure branch protection rules for "main" branch at least
 > https://github.com/gorgeous-george/smart_tracker
-- initialize local git repository
+- initialize local git repository (if not done previously)
 - set account's default identity (email and username)
 ```
 $ git config --global user.email "you@example.com"
@@ -118,10 +121,10 @@ git branch --delete develop
 - create folder "docker" to have all settings there
 - create folder "core" for the Django application that will be run as microservice within Docker
 - create Dockerfile "core.Dockerfile"
-- add appropriate commands and settings to the Dockerfile
-- create "core.env" file to keep secured the sensitive data required by docker-compose (DJANGO_SECRET_KEY and DB credentials)
-- add "core.env" file to ".gitignore"
-- create and configure "docker-compose.yml" file
+- add appropriate commands and settings to the "core.Dockerfile"
+- create ".core.env" file to keep secured the sensitive data required by docker-compose (DJANGO_SECRET_KEY, DB credentials, other variables)
+- add ".core.env" file to ".gitignore"
+- create and configure "docker-compose.yml" file (step-by-step: core service, db_core, and then others)
 - build and run up the docker-compose
 ```
 sudo docker-compose build
@@ -150,13 +153,13 @@ sudo fuser -k 8000/tcp
 pip install psycopg2-binary
 pip freeze > requirements.txt
 ```
-- update "core.settings.py" with DATABASES settings: engine for postgresql, and host, port, user, password, name as references to environment variables (for security purposes)
+- update "core.settings.py" with DATABASES settings: set postgresql as db engine, set references to environment variables (db host, port, user, password, name)
 - add appropriate environment variables to "core.env" file (host, port, user, password, name)
 - add "db_core" service to "django-compose.yml" file
 - create "docker-entrypoint.sh" and "wait-for-command.sh" to check that db is up before running services dependent on db
 - update Dockerfile to run "docker-entrypoint.sh" and "wait-for-command.sh"
 - re-build docker-compose
-- connect to "core" container's bash terminal to run migrations and create superuser (it lives only at the container level)
+- test connect to "core" container's bash terminal to run migrations and create superuser (it lives only at the container level)
 ```
 sudo docker-compose exec core bash
 ./manage.py makemigrations
@@ -164,7 +167,7 @@ sudo docker-compose exec core bash
 ./manage.py createsuperuser
 exit
 ```
-- in case of need connect to the database
+- in case of need connect to the postgresql database
 ```
 sudo docker-compose exec db_core psql --username=postgres --dbname=postgres
 $ \l    # list databases

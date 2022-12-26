@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   core:
-    container_name: core
+    container_name: tracker_core
     build:
       context: .
       dockerfile: docker/tracker_core/core.Dockerfile
@@ -15,7 +15,7 @@ services:
     env_file:
       - .core.env
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://0.0.0.0/admin/login/"]
+      test: ["CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/"]
       interval: 1m
       timeout: 5s
       retries: 2
