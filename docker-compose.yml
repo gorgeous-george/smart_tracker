@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: docker/tracker_core/core.Dockerfile
+    volumes:
+      - ./tracker_core:/app
     networks:
       - core_db_network
     ports:
@@ -14,6 +16,7 @@ services:
       - db_core
     env_file:
       - .core.env
+    restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/"]
       interval: 1m
@@ -23,6 +26,8 @@ services:
   db_core:
     container_name: db_core
     image: postgres:14-alpine
+    volumes:
+      - db_core_volume:/var/lib/postgresql/data
     networks:
       - core_db_network
     expose:
@@ -32,3 +37,6 @@ services:
 
 networks:
   core_db_network:
+
+volumes:
+  db_core_volume:
