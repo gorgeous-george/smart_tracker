@@ -2,8 +2,11 @@
 .idea/
 tracker_core/core/.idea
 
-# Docker environment variables
+# Docker
+#environment variables
 .core.env
+#dockerignore
+.dockerignore
 
 # Django #
 *.log
@@ -11,8 +14,12 @@ tracker_core/core/.idea
 *.pyc
 tracker_core/core/__pycache__
 
-#database sqlite
-db.sqlite3
+## LOCAL DEV SETTINGS
+#local settings
+tracker_core/core/settings_local_sqlite_non-docker.py
+#database sqlite itself
+tracker_core/db.sqlite3
+
 
 # Backup files #
 *.bak
