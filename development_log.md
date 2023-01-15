@@ -12,6 +12,7 @@
 - create root project folder
 - create "README.md", "development_log.md"	
 - init empty local git repository
+ 
 
 ***
 #### 2.1 Installing Django
@@ -78,7 +79,7 @@ $ git config --global user.name "Your Name"
 - add existed directories/files to git
 - initial commit to local git repository
 - renaming branch from "master" to "main"
-- connect to remote GitHub new repository that has been created preliminary via github.com website
+- connect to remote GitHub new repository that has been created preliminary via GitHub.com website
 - push the init commit to remote repository
 - create local branch "develop" && switch to it && add files to git tracker
 ```
@@ -145,6 +146,13 @@ sudo systemctl restart docker.socket docker.service
 ```
 sudo fuser -k 8000/tcp
 ```
+- in case a docker service is failed at OS level and/or
+docker daemon is stopped and refused connections,
+try to check the docker service's status first and then restart the service if needed
+ ```
+sudo service docker status
+sudo service docker restart
+```
 ***
 #### 2.5 Configuring database layer (PostgreSQL for "core" service)
 
@@ -159,7 +167,7 @@ pip freeze > requirements.txt
 - create "docker-entrypoint.sh" and "wait-for-command.sh" to check that db is up before running services dependent on db
 - update Dockerfile to run "docker-entrypoint.sh" and "wait-for-command.sh"
 - re-build docker-compose
-- test connect to "core" container's bash terminal to run migrations and create superuser (it lives only at the container level)
+- in case of need, direct connect to "core" container's bash terminal (either via "exec" - existed instance or "run" - new instance). For example to run migrations and create superuser (need volumes to keep such changes), to check the logs, debug, etc.
 ```
 sudo docker-compose exec core bash
 ./manage.py makemigrations
@@ -167,7 +175,7 @@ sudo docker-compose exec core bash
 ./manage.py createsuperuser
 exit
 ```
-- in case of need connect to the postgresql database
+- in case of need, direct connect to the postgresql database
 ```
 sudo docker-compose exec db_core psql --username=postgres --dbname=postgres
 $ \l    # list databases
@@ -177,20 +185,47 @@ $ \?    # help
 
 ***
 #### 2.6 Configuring django extensions and tools:
+- installed django-debug-toolbar
 
 ***
 #### 2.7 Configuring the microservices as docker containers
+- tracker_core
+- db_core
 
 ***
 ### 3. Development
 
-#### 3.1 "{app_name}" service
+
+#### the app is designed to be run as docker container, however for development purposes additional settings are created as well: "settings_local_sqlite_non-docker.py". Now we able to run using local sqlite.db without docker. The files of settings and db are added to ".gitignore".
+
+#### 3.1 "core_app" service
 ##### Creating apps
+- move to folder containing django "manage.py" file
+- start a new app "core_app", add "core_app" to INSTALLED_APPS in "settings.py"
+- start a new app "auth_core", add "auth_core" to INSTALLED_APPS in "settings.py"
+
 ##### Creating models
+- created model representing a Core Object for 'core_app' application
+- registering the CoreObject model in "admin.py"
+
 ##### Creating views
+- created pack of auth views (login, register, profile, password reset, etc - TDB)
+- 
 ##### Creating templates
+- created pack of auth templates (login, register, profile, password reset, etc TDB)
+- base template
+- index
+- dashboard TBD
+- sandbox TBD
+
 ##### Creating forms
+- created UserRegister form (model form TBD)
+
 ##### Configuring urls
+- index
+- accounts (login, logout, register, profile, update profile, password TBD)
+- dashboard TBD
+- sandbox TBD
 
 ***
 ### 4. Developing business logic and appropriate Celery tasks
