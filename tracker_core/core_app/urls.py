@@ -1,8 +1,17 @@
 from django.urls import path
 
-from core_app.views import CoreObjectListView, CoreObjectDetailView
+from core_app.views import (
+    CoreObjectCreateView,
+    CoreObjectDeleteView,
+    CoreObjectListView,
+    CoreObjectDetailView,
+    CoreObjectUpdateView,
+)
 
 urlpatterns = [
-    path('', CoreObjectListView.as_view(), name='objects'),                            # page showing all objects
-    path('object_details/<int:pk>', CoreObjectDetailView.as_view(), name='object_detail'),  # specific object detailed page
+    path('object/list', CoreObjectListView.as_view(), name='coreobject-list'),
+    path('object/<uuid:pk>', CoreObjectDetailView.as_view(), name='coreobject-detail'),
+    path('object/add/', CoreObjectCreateView.as_view(), name='coreobject-add'),
+    path('object/<uuid:pk>/', CoreObjectUpdateView.as_view(), name='coreobject-update'),
+    path('object/<uuid:pk>/delete/', CoreObjectDeleteView.as_view(), name='coreobject-delete'),
     ]

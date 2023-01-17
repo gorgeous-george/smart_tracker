@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    {% if user %}
+        <h2> HELLO {{ user }} </h2>
+    {% else %}
+        <h2> HELLO STRANGER </h2>
+    {% endif %}
+
+    <br>
+
+    {% if object_list %}
+
+        <table> Dashboard here </table>
+
+        <br>
+
+        {% for coreobject in object_list %}
+            <li><a href = {% url 'coreobject-detail' coreobject.pk %}>{{ coreobject.name }}</a></li>
+        {% endfor %}
+    {% endif %}
+
+    <br>
+
+    <a href = {% url 'coreobject-add' %}>Add new object</a>
+
+    <br>
+
+{% endblock %}

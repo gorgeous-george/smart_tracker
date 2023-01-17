@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1> Welcome to SMART tracker </h1>
+
+    {% if user %}
+        <h2> HELLO {{ user }} </h2>
+    {% else %}
+        <h2> HELLO STRANGER </h2>
+    {% endif %}
+
+    <br>
+
+    {% if object %}
+        <ul>
+           <li>Name: <b>{{ object.name }}</b></li>
+           <li>Description: <b>{{ object.description }}</b></li>
+           <li>Type: <b>{{ object.obj_type }}</b></li>
+           <li>Measure: <b>{{ object.measure }}</b></li>
+           <li>Measure Unit: <b>{{ object.measure_unit }}</b></li>
+           <li>Status: <b>{{ object.status }}</b></li>
+           <li>Lifelong period: <b>{{ object.lifelong_period }}</b></li>
+           <li>Responsible: <b>{{ object.responsible }}</b></li>
+        </ul>
+        <br>
+        <a href="{% url 'coreobject-update' object.pk %}">Update object</a>
+        <br>
+        <a href="{% url 'coreobject-delete' object.pk %}">Delete object</a>
+        <br>
+        <a href="{% url 'coreobject-list' %}">Back to object list</a>
+    {% endif %}
+
+{% endblock %}

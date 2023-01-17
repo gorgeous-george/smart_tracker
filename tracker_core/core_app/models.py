@@ -32,7 +32,6 @@ class CoreObject(models.Model):
         null=False,
         blank=False,
         max_length=255,
-        unique=True,
     )
     description = models.CharField(
         null=False,
@@ -64,7 +63,7 @@ class CoreObject(models.Model):
         null=False,
         blank=False,
         max_length=255,
-        default='if not set, 1 is Green, 2 is Orange, 3 is Red'
+        default='unit',
     )
     status = models.CharField(
         null=False,
@@ -85,3 +84,7 @@ class CoreObject(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('coreobject-detail', kwargs={'pk': self.pk})

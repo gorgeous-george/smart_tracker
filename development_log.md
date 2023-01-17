@@ -5,7 +5,6 @@
 
 ***
 ### 2. Creation of project environment
-
 - install Python
 - install Git
 - install PyCharm
@@ -13,10 +12,8 @@
 - create "README.md", "development_log.md"	
 - init empty local git repository
  
-
 ***
 #### 2.1 Installing Django
-
 - create separate folder "tracker_core" that will contain a core django app
 - go to created directory and activate virtual environment
 ```
@@ -34,7 +31,6 @@ $ python manage.py runserver
 
 ***
 #### 2.2 Installing Docker
-
 - open terminal on Ubuntu
 - remove any Docker files that are running in the system
 - check if the system is up-to-date
@@ -64,7 +60,6 @@ https://docs.docker.com/engine/install/linux-postinstall/
 
 ***
 #### 2.3 Creation and configuring git repository
-
 - create new repository at GitHub to have it as remote repository
 - create and configure SSH keys
 - configure branch protection rules for "main" branch at least
@@ -118,7 +113,6 @@ git branch --delete develop
 
 ***
 #### 2.4 Containerization - configuring docker and docker-compose
-
 - create folder "docker" to have all settings there
 - create folder "core" for the Django application that will be run as microservice within Docker
 - create Dockerfile "core.Dockerfile"
@@ -155,7 +149,6 @@ sudo service docker restart
 ```
 ***
 #### 2.5 Configuring database layer (PostgreSQL for "core" service)
-
 - install psycopg library within "core" virtual environment and update "requirements.txt" to have it in the image
 ```
 pip install psycopg2-binary
@@ -184,8 +177,9 @@ $ \?    # help
 ```
 
 ***
-#### 2.6 Configuring django extensions and tools:
-- installed django-debug-toolbar
+#### 2.6 Installing and configuring django extensions and other tools:
+- django-debug-toolbar
+- flake8
 
 ***
 #### 2.7 Configuring the microservices as docker containers
@@ -194,38 +188,66 @@ $ \?    # help
 
 ***
 ### 3. Development
+*the app is designed to be run as docker container, however for development purposes additional settings are 
+created as well. It makes possible to run the server using local sqlite.db without docker. 
+The files of settings and db are added to ".gitignore". To run ./manage.py command with some specific 
+"settings_dev.py", the following language is used:*
+```
+./manage.py <command> --settings=core.settings_dev
+```
 
-
-#### the app is designed to be run as docker container, however for development purposes additional settings are created as well: "settings_local_sqlite_non-docker.py". Now we able to run using local sqlite.db without docker. The files of settings and db are added to ".gitignore".
-
-#### 3.1 "core_app" service
-##### Creating apps
+##### 3.1 Creating apps
 - move to folder containing django "manage.py" file
-- start a new app "core_app", add "core_app" to INSTALLED_APPS in "settings.py"
-- start a new app "auth_core", add "auth_core" to INSTALLED_APPS in "settings.py"
+- start a new app, add app_name to INSTALLED_APPS in "settings.py"
+```
+./manage.py startapp app_name
+```
+- 'auth_core' - custom authentication module
+- 'core_app' - raw app skeleton (core object's generic views)
+- 'dashboard' - dashboard module (analytics, visualisation, presentation)
+- 'sandbox' - sandbox module (creation of custom objects' sets, namely groups of objects to track)
+- TO THINK ABOUT SEPARATE APP FOR BUSINESS LOGIC TBD
+ 
+##### 3.2 Creating models
+- 'core_app':
+  - created model representing a Core Object for 'core_app' application
+  - registering the CoreObject model in "admin.py"
 
-##### Creating models
-- created model representing a Core Object for 'core_app' application
-- registering the CoreObject model in "admin.py"
+##### 3.3 Creating views
+- 'auth_core': 
+  - custom django generic class-based views (register, profile view, profile update)
+- 'core_app':
+  - custom django generic class-based views (listview, detailview, CRUD pack) 
+  
+##### 3.4 Creating templates
+- 'auth_core': 
+  - pack of auth templates (login, logout, password, profile, register - TO ADD BOOTSTRAP FORMS,TO CHECK PASSWORD - TBD)
+- 'core_app':
+  - base_generic
+  - index
+  - core object listview, detailview, form, and CRUD pack - TO ADD BOOTSTRAP TBD 
+- 'dashboard': 
+  - TBD
+- 'sandbox':
+  - TBD
 
-##### Creating views
-- created pack of auth views (login, register, profile, password reset, etc - TDB)
-- 
-##### Creating templates
-- created pack of auth templates (login, register, profile, password reset, etc TDB)
-- base template
-- index
-- dashboard TBD
-- sandbox TBD
+##### 3.5 Creating forms
+- 'auth_core':
+  - UserCreationForm (django's pre-defined model form)
+- 'core_app':
+  - CoreObjectForm (custom model form)
 
-##### Creating forms
-- created UserRegister form (model form TBD)
-
-##### Configuring urls
-- index
-- accounts (login, logout, register, profile, update profile, password TBD)
-- dashboard TBD
-- sandbox TBD
+##### 3.6 Configuring urls
+- ''
+- index/
+- admin/
+- account/
+  - django's pre-defined links to login, logout, password reset ('django.contrib.auth.urls')
+  - custom links for register, view profile, update profile
+- app/
+  - core object list view, detail view, CRUD views
+- dashboard/ TBD
+- sandbox/ TBD
 
 ***
 ### 4. Developing business logic and appropriate Celery tasks
