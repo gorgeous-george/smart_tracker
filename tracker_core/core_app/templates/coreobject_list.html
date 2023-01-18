@@ -12,9 +12,88 @@
 
     {% if object_list %}
 
-        <table> Dashboard here </table>
+        <table class="table">
+
+          <thead>
+            <tr class="table-info">
+              <th scope="col">Dashboard</th>
+              <th scope="col">Is</th>
+              <th scope="col">Here</th>
+              <th scope="col">!</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+                <th scope="col">
+
+                 <!-- Chart Doughnut-->
+                  <script src="https://d3js.org/d3.v4.min.js"></script>
+                  <script src="https://cdn.jsdelivr.net/npm/billboard.js/dist/billboard.min.js"></script>
+                  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+                  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.0/chart.min.js"></script>
+
+                  <body>
+                    <div id="donut-chart"></div>
+                    <script>
+                      var chart = bb.generate({
+                        data: {
+                          columns: [
+                            ["red", 5],
+                            ["orange", 2],
+                            ["green", 3],
+                          ],
+                          type: "donut",
+                        },
+                        donut: {
+                          title: "suka  ",
+                        },
+                        bindto: "#donut-chart",
+                      });
+                    </script>
+                  </body>
+
+                </th>
+            </tr>
+          </tbody>
+
+        </table>
+        <!-- /Chart     -->
+
 
         <br>
+
+         <table class="table table-sm">
+          <thead>
+            <tr class="table-active">
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Dataset</th>
+              <th scope="col">Measure</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-success">
+              <th scope="row">1</th>
+              <td>Beer</td>
+              <td>Supply</td>
+              <td>4 liters</td>
+            </tr>
+          <tr class="table-warning">
+              <th scope="row">2</th>
+              <td>Electricity</td>
+              <td>Utility</td>
+              <td>2</td>
+            </tr>
+          <tr class="table-warning">
+              <th scope="row">3</th>
+              <td>Cleaning</td>
+              <td>Routine</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
 
         {% for coreobject in object_list %}
             <li><a href = {% url 'coreobject-detail' coreobject.pk %}>{{ coreobject.name }}</a></li>

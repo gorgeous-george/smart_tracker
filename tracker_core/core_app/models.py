@@ -16,7 +16,7 @@ class CoreObject(models.Model):
     class StatusChoices(models.TextChoices):
         """
         Choices for 'status' field.
-        Initially designed as simple colored pattern for dashboards
+        Initially designed as simple colored 'success-warning-danger' pattern for dashboards
         """
         GREEN = 'G'
         ORANGE = 'O'
@@ -50,14 +50,19 @@ class CoreObject(models.Model):
         default='OTHER',
         help_text='You can use pre-defined dataset type (SUPPLIES, UTILITIES, HOME_ROUTINE, OTHER) or create your own',
     )
+    """
+    'measure' field defines quantity 
+    """
     measure = models.IntegerField(
         null=False,
         blank=False,
         default=0,
+        help_text='If not set, 1-Green, 2-Orange, 3-Red',
     )
     _measure_limit = models.IntegerField(
         null=False,
         blank=False,
+
     )
     measure_unit = models.CharField(
         null=False,
