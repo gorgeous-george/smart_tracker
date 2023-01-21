@@ -80,10 +80,10 @@
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Dataset', 'Status'],
-          ['Supplies', 2],
-          ['Utilities', 2],
-          ['Routine tasks', 2]
+          ['Status', 'Count'],
+          ['Danger', 2],
+          ['Warning', 2],
+          ['Success', 2]
         ]);
 
         var options = {

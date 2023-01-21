@@ -32,40 +32,58 @@
 
         <br>
 
-         <table class="table table-bordered table-sm table-responsive">
+         <table class="table table-bordered table-sm table-responsive w-75">
           <thead>
             <tr class="table-active">
-              <th scope="col">#</th>
+              <th scope="col">Status</th>
               <th scope="col">Name</th>
               <th scope="col">Dataset</th>
               <th scope="col">Measure</th>
+              <th scope="col">Description</th>
+              <th scope="col">Responsible</th>
+              <th scope="col">Lifelong period</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="table-success">
-              <th scope="row">1</th>
-              <td>Beer</td>
-              <td>Supply</td>
-              <td>4 liters</td>
-            </tr>
-          <tr class="table-warning">
-              <th scope="row">2</th>
-              <td>Electricity</td>
-              <td>Utility</td>
-              <td>2</td>
-            </tr>
-          <tr class="table-warning">
-              <th scope="row">3</th>
-              <td>Cleaning</td>
-              <td>Routine</td>
-              <td>2</td>
-            </tr>
+            {% for coreobject in object_list %}
+                <tr class="table-success">
+                    {% if coreobject.status == 'G'  %}
+                        <td class="bg-success">
+                            {{ coreobject.status }}
+                        </td>
+                    {% elif coreobject.status == 'O'  %}
+                        <td class="bg-warning">
+                            {{ coreobject.status }}
+                        </td>
+                    {%  else %}
+                        <td class="bg-danger">
+                            {{ coreobject.status }}
+                        </td>
+                    {% endif %}
+                    <td>
+                        <a href = {% url 'coreobject-detail' coreobject.pk %}>{{ coreobject.name }}</a>
+                    </td>
+                    <td>
+                        {{ coreobject.obj_type }}
+                    </td>
+                    <td>
+                        {{ coreobject.measure }}
+                    </td>
+                    <td>
+                        {{ coreobject.description }}
+                    </td>
+                    <td>
+                        {{ coreobject.responsible }}
+                    </td>
+                    <td>
+                        {{ coreobject.lifelong_period }}
+                    </td>
+                </tr>
+            {% endfor %}
           </tbody>
         </table>
 
-        {% for coreobject in object_list %}
-            <li><a href = {% url 'coreobject-detail' coreobject.pk %}>{{ coreobject.name }}</a></li>
-        {% endfor %}
+
     {% endif %}
 
     <br>
