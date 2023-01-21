@@ -6,10 +6,14 @@ from core_app.models import CoreObject
 
 def index(request):
     """
-    View function for shop home page
-    It will be used for redirect from the below views
+    View function for the home page
     """
     return render(request, 'index.html')
+
+
+# todo: to delete after testing (also url and template)
+def test_view(request):
+    return render(request, 'test.html')
 
 
 class CoreObjectListView(ListView):
@@ -17,7 +21,7 @@ class CoreObjectListView(ListView):
     Generic class-based list view for all core objects available.
     """
     model = CoreObject
-    paginate_by = 20
+    paginate_by = 2
     template_name = "coreobject_list.html"
 
     def get_queryset(self):
@@ -47,32 +51,32 @@ class CoreObjectCreateView(CreateView):
     model = CoreObject
     template_name = "coreobject_form.html"
     fields = [
-            "name",
-            "description",
-            "obj_type",
-            "measure",
-            "_measure_limit",
-            "measure_unit",
-            "status",
-            "lifelong_period",
-            "responsible",
-        ]
+        "name",
+        "description",
+        "obj_type",
+        "measure",
+        "_measure_limit",
+        "measure_unit",
+        "status",
+        "lifelong_period",
+        "responsible",
+    ]
 
 
 class CoreObjectUpdateView(UpdateView):
     model = CoreObject
     template_name = "coreobject_form.html"
     fields = [
-            "name",
-            "description",
-            "obj_type",
-            "measure",
-            "_measure_limit",
-            "measure_unit",
-            "status",
-            "lifelong_period",
-            "responsible",
-        ]
+        "name",
+        "description",
+        "obj_type",
+        "measure",
+        "_measure_limit",
+        "measure_unit",
+        "status",
+        "lifelong_period",
+        "responsible",
+    ]
 
 
 class CoreObjectDeleteView(DeleteView):

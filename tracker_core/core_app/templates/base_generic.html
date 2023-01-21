@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,15 +7,71 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}SMART Tracker {% endblock %}</title>
+
+    <title>
+        {% block title %}
+            SMART Tracker
+        {% endblock %}
+    </title>
 
     <!-- Bootstrap CSS -->
-    <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="{% static 'assets/dist/css/bootstrap.min.css' %}">
+
+        <style>
+          .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+          }
+
+          @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+              font-size: 3.5rem;
+            }
+          }
+
+          .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+          }
+
+          .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+          }
+
+          .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+          }
+
+          .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+          }
+
+          .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+          }
+        </style>
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'dashboard.css' %}" rel="stylesheet">
 
     <!-- Google scripts for Pie Chart -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -43,106 +100,136 @@
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">SMART Tracker</span>
+    <!-- django (flash) messages  -->
+    {% if messages %}
+    <div class="row">
+      <div class="col-sm-12">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <strong>{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% else %}
+              {{ message.tags|title }}{% endif %}!</strong> {{ message }}
+          </div>
+        {% endfor %}
       </div>
-    </nav>
+    </div>
+    {% endif %}
 
-    <!-- Page container -->
+    <!-- Navbar -->
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{% url 'index' %}">Smart tracker</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+      <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+          <a class="nav-link px-3" href="#">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page container open tag-->
     <div class="container-fluid">
 
-      {% if messages %}
-        <div class="row">
-          <div class="col-sm-12">
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
-                <strong>{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% else %}
-                  {{ message.tags|title }}{% endif %}!</strong> {{ message }}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      {% endif %}
-
-      <br>
-
+      <!-- Row 1 -->
       <div class="row">
 
-        <div class="col-sm-2">
-          {% block sidebar %}
+      <!-- Sidebar -->
+      {% block sidebar %}
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+          <div class="position-sticky pt-3 sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'index' %}">
+                  <span data-feather="home" class="align-text-bottom"></span>
+                  Home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'coreobject-list' %}">
+                  <span data-feather="pie-chart" class="align-text-bottom"></span>
+                  Dashboard
+                </a>
+              </li>
 
-            <ul class="sidebar-nav">
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'coreobject-list' %}">App</a></li>
-    {#          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>#}
-    {#          <li><a href="{% url 'sandbox' %}">Sandbox</a></li>#}
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+              <span>Profile</span>
+            </h6>
+
+            <ul class="nav flex-column mb-2">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">
+                        <span data-feather="user" class="align-text-bottom"></span>
+                        Logged as: {{ user.get_username }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">
+                        <span data-feather="log-out" class="align-text-bottom"></span>
+                        Logout
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">
+                        Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}?next={{ request.path }}">
+                        Register
+                    </a>
+                </li>
+            {% endif %}
             </ul>
 
-            <ul class="sidebar-nav">
-              {% if user.is_authenticated %}
-                <li>Logged as: {{ user.get_username }}</li>
-                <li><a href="{% url 'profile' %}">My profile</a></li>
-                <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
-              {% else %}
-                <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
-                <li><a href="{% url 'register' %}?next={{ request.path }}">Register</a></li>
-              {% endif %}
-            </ul>
-
+            <ul class="nav flex-column mb-2">
             {% if user.is_staff %}
-              <hr/>
-              <ul class="sidebar-nav">
-                <li>Staff tools:</li>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+                <span>Staff tools</span>
+                </h6>
                 {% if perms.catalog.can_mark_returned %}
-                  <li><a href="{% url 'admin:index' %}">Admin module</a></li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'admin:index' %}">
+                          <span data-feather="tool" class="align-text-bottom"></span>
+                          Admin module
+                      </a>
+                  </li>
                 {% endif %}
               </ul>
+
             {% endif %}
-          {% endblock %}
+          </div>
+        </nav>
+      {% endblock %}
 
-        <!-- div.col -->
-        </div>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-        <div class="col-sm-10 ">
+      <!-- Empty block for content of templates extended from base_generic -->
+      {% block content %}{% endblock %}
 
-          {% block content %}{% endblock %}
+      </main>
 
-          {% block pagination %}
-            {% if is_paginated %}
-              <div class="pagination">
-                <span class="page-links">
-                    {% if page_obj.has_previous %}
-                      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-                    {% endif %}
-                  <span class="page-current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
-                  {% if page_obj.has_next %}
-                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-                  {% endif %}
-                </span>
-              </div>
-            {% endif %}
-          {% endblock %}
-
-        <!-- div.col -->
-        </div>
-
-      <!-- div.row -->
+      <!-- Row 1 closed -->
       </div>
 
-    <!-- div.container -->
+    <!-- Page container closed -->
     </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+    <script src="{% static 'dashboard.js' %}"></script>
+    <script src="{% static 'assets/dist/js/bootstrap.bundle.min.js' %}"></script>
+
 
 </body>
 </html>
