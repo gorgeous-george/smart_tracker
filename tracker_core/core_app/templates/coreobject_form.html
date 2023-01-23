@@ -1,8 +1,11 @@
 {% extends "base_generic.html" %}
 
+{% load widget_tweaks  %}
+
 {% block content %}
 
-    <h1> Welcome to SMART tracker </h1>
+    <br>
+    <h1> Create a new object </h1>
 
     {% if user %}
         <h2> HELLO {{ user }} </h2>
@@ -12,10 +15,32 @@
 
     <br>
 
-    <form action="" method="post" class="form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="OK">
+    <div class="container w-25">
+    <form method="post">
+      {% csrf_token %}
+
+      {# Looping over the hidden fields #}
+      {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+
+      {# Looping over the visible fields #}
+      {% for field in form.visible_fields %}
+        <div class="form-group">
+          {{ field.errors }}
+          {{ field.label_tag }}
+          {% render_field field class="form-control" %}
+          {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <br>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
     </form>
+    </div>
 
 {% endblock %}

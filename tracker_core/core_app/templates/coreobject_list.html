@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    <br>
+
     {% if user %}
         <h2> HELLO {{ user }} </h2>
     {% else %}
@@ -17,6 +19,7 @@
           <thead>
             <tr class="table-info">
               <th scope="col">Dashboard</th>
+              <th scope="col">Filters</th>
             </tr>
           </thead>
 
@@ -25,6 +28,38 @@
                 <th scope="col">
                     <!-- Pie Chart -->
                     <div id="piechart_3d" style="width:400px; height:200px;"></div>
+                </th>
+                <th scope="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioSupplies" id="flexRadioSupplies" checked>
+                      <label class="form-check-label" for="flexRadioSupplies">
+                        SUPPLIES
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioUtilities" id="flexRadioUtilities">
+                      <label class="form-check-label" for="flexRadioUtilities">
+                        UTILITIES
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioRoutine" id="flexRadioRoutine">
+                      <label class="form-check-label" for="flexRadioRoutine">
+                        ROUTINE
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioOther" id="flexRadioOther">
+                      <label class="form-check-label" for="flexRadioOther">
+                        OTHER
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioAll" id="flexRadioAll">
+                      <label class="form-check-label" for="flexRadioAll">
+                        ALL
+                      </label>
+                    </div>
                 </th>
             </tr>
           </tbody>

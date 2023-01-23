@@ -21,7 +21,7 @@ class CoreObjectListView(ListView):
     Generic class-based list view for all core objects available.
     """
     model = CoreObject
-    paginate_by = 5
+    paginate_by = 10
     template_name = "coreobject_list.html"
 
     def get_queryset(self):
