@@ -1,0 +1,36 @@
+{% for coreobject in coreobjects %}
+    <tr class="table-success">
+        {% if coreobject.status == 'G' %}
+            <td class="bg-success">{{ coreobject.status }}</td>
+        {% elif coreobject.status == 'O' %}
+            <td class="bg-warning">{{ coreobject.status }}</td>
+        {% elif coreobject.status == 'R' %}
+            <td class="bg-danger">{{ coreobject.status }}</td>
+        {% else %}
+            <td>{{ coreobject.status }}</td>
+        {% endif %}
+        <td>{{ coreobject.name }}</td>
+        <td>{{ coreobject.obj_type }}</td>
+        <td>{{ coreobject.measure }}</td>
+        <td>{{ coreobject.description }}</td>
+        <td>{{ coreobject.responsible }}</td>
+        <td>{{ coreobject.lifelong_period }}</td>
+        <td style="width: 150px">
+            <button type="button"
+                    class="btn btn-warning btn-sm js-update-coreobject"
+                    data-url="{% url 'coreobject-update' coreobject.id %}">
+                    <span data-feather="edit" class="align-text-bottom"></span> Edit
+            </button>
+            <button type="button"
+                    class="btn btn-danger btn-sm js-delete-coreobject"
+                    data-url="{% url 'coreobject-delete' coreobject.id %}">
+                    <span data-feather="delete" class="align-text-bottom"></span> Delete
+            </button>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="8" class="text-center bg-warning">No objects</td>
+    </tr>
+{% endfor %}
+

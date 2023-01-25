@@ -1,9 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, DetailView, UpdateView
-from core_app.models import CoreObject
+from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
+from core_app.models import CoreObject
+from core_app.forms import CoreObjectModelForm
 
 def index(request):
     """
@@ -11,76 +12,56 @@ def index(request):
     """
     return render(request, 'index.html')
 
-
-# todo: to delete after testing (also url and template)
-def test_view(request):
-    return render(request, 'test.html')
-
-
-class CoreObjectListView(LoginRequiredMixin, ListView):
-    """
-    Generic class-based list view for all core objects available.
-    """
-    model = CoreObject
-    paginate_by = 10
-    template_name = "coreobject_list.html"
-
-    def get_queryset(self):
-        """
-        Return list of all CoreObject objects
-        """
-        queryset = CoreObject.objects.all()
-        return queryset
+def coreobject_list(request):
+    coreobjects = CoreObject.objects.all()
+    return render(request, 'coreobject_list.html', {'coreobjects': coreobjects})
 
 
-class CoreObjectDetailView(LoginRequiredMixin, DetailView):
-    """
-    Generic class-based detailed view for a particular object.
-    """
-    model = CoreObject
-    template_name = "coreobject_detail.html"
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context['object_list'] = CoreObject.objects.all()
-        return context
-
-
-class CoreObjectCreateView(LoginRequiredMixin, CreateView):
-    model = CoreObject
-    template_name = "coreobject_form.html"
-    fields = [
-        "name",
-        "description",
-        "obj_type",
-        "measure",
-        "_measure_limit",
-        "measure_unit",
-        "status",
-        "lifelong_period",
-        "responsible",
-    ]
+def save_coreobject_form(request, form, template_name):
+    data = dict()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+            coreobjects = CoreObject.objects.all()
+            data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
+                'coreobjects': coreobjects
+            })
+        else:
+            data['form_is_valid'] = False
+    context = {'form': form}
+    data['html_form'] = render_to_string(template_name, context, request=request)
+    return JsonResponse(data)
 
 
-class CoreObjectUpdateView(LoginRequiredMixin, UpdateView):
-    model = CoreObject
-    template_name = "coreobject_form.html"
-    fields = [
-        "name",
-        "description",
-        "obj_type",
-        "measure",
-        "_measure_limit",
-        "measure_unit",
-        "status",
-        "lifelong_period",
-        "responsible",
-    ]
+def coreobject_create(request):
+    if request.method == 'POST':
+        form = CoreObjectModelForm(request.POST)
+    else:
+        form = CoreObjectModelForm()
+    return save_coreobject_form(request, form, 'includes/partial_coreobject_create.html')
 
 
-class CoreObjectDeleteView(LoginRequiredMixin, DeleteView):
-    model = CoreObject
-    template_name = "coreobject_confirm_delete.html"
-    success_url = reverse_lazy('coreobject-list')
+def coreobject_update(request, pk):
+    coreobject = get_object_or_404(CoreObject, pk=pk)
+    if request.method == 'POST':
+        form = CoreObjectModelForm(request.POST, instance=coreobject)
+    else:
+        form = CoreObjectModelForm(instance=coreobject)
+    return save_coreobject_form(request, form, 'includes/partial_coreobject_update.html')
+
+
+def coreobject_delete(request, pk):
+    coreobject = get_object_or_404(CoreObject, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        coreobject.delete()
+        data['form_is_valid'] = True
+        coreobjects = CoreObject.objects.all()
+        data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
+            'coreobjects': coreobjects
+        })
+    else:
+        context = {'coreobject': coreobject}
+        data['html_form'] = render_to_string('includes/partial_coreobject_delete.html', context, request=request)
+    return JsonResponse(data)

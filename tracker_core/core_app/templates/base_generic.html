@@ -9,72 +9,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>
-    {% block title %}
-        SMART Tracker
-    {% endblock %}
+    {% block title %}SMART Tracker{% endblock title %}
     </title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'assets/dist/css/bootstrap.min.css' %}">
+    <!-- jQuery with ajax -->
+    <script src="{% static 'assets/js/jquery-3.6.3.js' %}"></script>
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-    </style>
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'dashboard.css' %}" rel="stylesheet">
+    <!-- Custom styles for Google Pie Chart -->
+    <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet">
 
     <!-- Google scripts for Pie Chart -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="{% static 'assets/js/loader.js' %}"></script>
     <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
@@ -98,6 +46,12 @@
         chart.draw(data, options);
       }
     </script>
+
+    {% block extra_css %}
+    {% endblock extra_css%}
+
+    {% block extra_js %}
+    {% endblock extra_js%}
 
 </head>
 
@@ -195,7 +149,7 @@
       {% endif %}
       </div>
     </nav>
-    {% endblock %}
+    {% endblock sidebar %}
 
     <!-- Page container open tag-->
     <div class="container-fluid text-start">
@@ -206,7 +160,8 @@
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
       <!-- Empty block for content of templates extended from base_generic -->
-      {% block content %}{% endblock %}
+      {% block content %}
+      {% endblock content %}
 
       </main>
 
@@ -217,16 +172,13 @@
     </div>
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-    <script src="{% static 'dashboard.js' %}"></script>
-    <script src="{% static 'assets/dist/js/bootstrap.bundle.min.js' %}"></script>
-
+    <!-- required JavaScript -->
+    <script src="{% static 'assets/js/jquery-3.6.3.js' %}"></script>
+    <script src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/Chart.min.js' %}"></script>
+    <script src="{% static 'assets/js/dashboard.js' %}"></script>
 
 </body>
 </html>

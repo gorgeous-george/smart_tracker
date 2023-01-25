@@ -1,17 +1,11 @@
 from django.urls import path
 
-from core_app.views import (
-    CoreObjectCreateView,
-    CoreObjectDeleteView,
-    CoreObjectListView,
-    CoreObjectDetailView,
-    CoreObjectUpdateView,
-)
+from core_app.views import coreobject_list, coreobject_create, coreobject_update, coreobject_delete
+
 
 urlpatterns = [
-    path('object/list', CoreObjectListView.as_view(), name='coreobject-list'),
-    path('object/<uuid:pk>', CoreObjectDetailView.as_view(), name='coreobject-detail'),
-    path('object/add/', CoreObjectCreateView.as_view(), name='coreobject-add'),
-    path('object/<uuid:pk>/', CoreObjectUpdateView.as_view(), name='coreobject-update'),
-    path('object/<uuid:pk>/delete/', CoreObjectDeleteView.as_view(), name='coreobject-delete'),
+    path('objects/', coreobject_list, name='coreobject-list'),
+    path('objects/add/', coreobject_create, name='coreobject-add'),
+    path('objects/<uuid:pk>/update/', coreobject_update, name='coreobject-update'),
+    path('objects/<uuid:pk>/delete/', coreobject_delete, name='coreobject-delete'),
     ]

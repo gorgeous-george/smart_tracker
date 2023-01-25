@@ -1,5 +1,11 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+
+{% block extra_js %}
+  <script src="{% static 'assets/js/coreobjects.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
     <br>
@@ -12,9 +18,8 @@
 
     <br>
 
-    {% if object_list %}
-
-        <table class="table table-bordered" style="width:40%">
+    #dashboard
+     <table class="table table-bordered" style="width:40%" id="dashboard-table">
 
           <thead>
             <tr class="table-info">
@@ -67,77 +72,41 @@
 
         <br>
 
-         <table class="table table-bordered table-sm table-responsive w-75">
-          <thead>
-            <tr class="table-active">
-              <th scope="col">Status</th>
-              <th scope="col">Name</th>
-              <th scope="col">Dataset</th>
-              <th scope="col">Measure</th>
-              <th scope="col">Description</th>
-              <th scope="col">Responsible</th>
-              <th scope="col">Lifelong period</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for coreobject in object_list %}
-                <tr class="table-success">
-                    {% if coreobject.status == 'G'  %}
-                        <td class="bg-success">
-                            {{ coreobject.status }}
-                        </td>
-                    {% elif coreobject.status == 'O'  %}
-                        <td class="bg-warning">
-                            {{ coreobject.status }}
-                        </td>
-                    {%  else %}
-                        <td class="bg-danger">
-                            {{ coreobject.status }}
-                        </td>
-                    {% endif %}
-                    <td>
-                        <a href = {% url 'coreobject-detail' coreobject.pk %}>{{ coreobject.name }}</a>
-                    </td>
-                    <td>
-                        {{ coreobject.obj_type }}
-                    </td>
-                    <td>
-                        {{ coreobject.measure }}
-                    </td>
-                    <td>
-                        {{ coreobject.description }}
-                    </td>
-                    <td>
-                        {{ coreobject.responsible }}
-                    </td>
-                    <td>
-                        {{ coreobject.lifelong_period }}
-                    </td>
-                </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+    <p>
+    <button type="button" class="btn btn-primary js-create-coreobject" data-url="{% url 'coreobject-add' %}">
+      New object
+    </button>
+    </p>
 
-
-    {% endif %}
-
-    <br>
-
-    <a href = {% url 'coreobject-add' %}>Add new object</a>
-
-    <br>
+    <table class="table table-bordered table-sm table-responsive w-75 align-top" id="coreobject-table">
+    <thead>
+    <tr class="table-active align-top">
+      <th scope="col">Status</th>
+      <th scope="col">Name</th>
+      <th scope="col">Dataset</th>
+      <th scope="col">Measure</th>
+      <th scope="col">Description</th>
+      <th scope="col">Responsible</th>
+      <th scope="col">Lifelong period</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_coreobject_list.html' %}
+    </tbody>
+    </table>
 
     <!-- Paginator -->
     {% block pagination %}
     {% if is_paginated %}
       <div class="pagination">
         <span class="page-links">
-            {% if page_obj.has_previous %}
-              <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
+          {% if page_obj.has_previous %}
+            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
           <span class="page-current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
           {% if page_obj.has_next %}
             <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
           {% endif %}
@@ -145,5 +114,12 @@
       </div>
     {% endif %}
     {% endblock %}
+
+    <div class="modal fade" id="modal-coreobject">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
