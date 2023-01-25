@@ -180,6 +180,7 @@ $ \?    # help
 #### 2.6 Installing and configuring django extensions and other tools:
 - django-debug-toolbar
 - flake8
+- widget-tweaks
 
 ***
 #### 2.7 Configuring the microservices as docker containers
@@ -225,7 +226,7 @@ The files of settings and db are added to ".gitignore". To run ./manage.py comma
 - 'core_app':
   - base_generic
   - index
-  - core object listview, detailview, form, and CRUD pack - TO ADD BOOTSTRAP TBD 
+  - core object listview, detailview, form, and CRUD pack 
 - 'dashboard': 
   - TBD
 - 'sandbox':
@@ -248,6 +249,13 @@ The files of settings and db are added to ".gitignore". To run ./manage.py comma
   - core object list view, detail view, CRUD views
 - dashboard/ TBD
 - sandbox/ TBD
+
+#### 3.7 Creating and configuring front-end files and scripts
+- installed required scripts, namely added it to the base template:
+  - Bootstrap
+  - jQuery
+  - CSS and JS scripts required by chosen Bootstrap design 
+- created 'static/' folders to keep static files
 
 ***
 ### 4. Developing business logic and appropriate Celery tasks

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, UpdateView
@@ -16,7 +17,7 @@ def test_view(request):
     return render(request, 'test.html')
 
 
-class CoreObjectListView(ListView):
+class CoreObjectListView(LoginRequiredMixin, ListView):
     """
     Generic class-based list view for all core objects available.
     """
@@ -32,7 +33,7 @@ class CoreObjectListView(ListView):
         return queryset
 
 
-class CoreObjectDetailView(DetailView):
+class CoreObjectDetailView(LoginRequiredMixin, DetailView):
     """
     Generic class-based detailed view for a particular object.
     """
@@ -47,7 +48,7 @@ class CoreObjectDetailView(DetailView):
         return context
 
 
-class CoreObjectCreateView(CreateView):
+class CoreObjectCreateView(LoginRequiredMixin, CreateView):
     model = CoreObject
     template_name = "coreobject_form.html"
     fields = [
@@ -63,7 +64,7 @@ class CoreObjectCreateView(CreateView):
     ]
 
 
-class CoreObjectUpdateView(UpdateView):
+class CoreObjectUpdateView(LoginRequiredMixin, UpdateView):
     model = CoreObject
     template_name = "coreobject_form.html"
     fields = [
@@ -79,7 +80,7 @@ class CoreObjectUpdateView(UpdateView):
     ]
 
 
-class CoreObjectDeleteView(DeleteView):
+class CoreObjectDeleteView(LoginRequiredMixin, DeleteView):
     model = CoreObject
     template_name = "coreobject_confirm_delete.html"
     success_url = reverse_lazy('coreobject-list')
