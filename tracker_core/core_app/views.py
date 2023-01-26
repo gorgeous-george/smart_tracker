@@ -6,26 +6,61 @@ from django.template.loader import render_to_string
 from core_app.models import CoreObject
 from core_app.forms import CoreObjectModelForm
 
+
 def index(request):
     """
-    View function for the home page
+    Base view function for the home page.
     """
     return render(request, 'index.html')
 
-def coreobject_list(request):
+
+def test(request):
+    """
+    todo: to delete this view function, it has been created only for testing
+    """
+    return render(request, 'test.html')
+
+def coreobject_paginator(request):
+    """
+    Since paginator is used in more than one place, it was defined as a separate function.
+    It is called by:
+    - coreobject_list()
+    - save_coreobject_form()
+    """
     coreobjects = CoreObject.objects.all()
-    return render(request, 'coreobject_list.html', {'coreobjects': coreobjects})
+    paginator = Paginator(coreobjects, 5)  # Show 5 coreobjects per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return page_obj
+
+
+def coreobject_list(request):
+    """
+    View representing application's main page.
+    Its default purpose is to return a paginated list of all coreobjects.
+    """
+    page_obj = coreobject_paginator(request)
+    return render(request, 'coreobject_list.html', {'page_obj': page_obj})
 
 
 def save_coreobject_form(request, form, template_name):
+    """
+    Since this function is used in more than one place, it was defined as a separate function.
+    Its purpose is to validate the obtained form, save the valid form, take an updated list of all coreobjects,
+    and return JsonResponse with the form, the updated coreobject list and the html for templates update that
+     will be used by ajax (see 'static/assets/js/coreobjects.js' for details)
+    It is called by:
+    - coreobject_create()
+    - coreobject_update()
+    """
     data = dict()
     if request.method == 'POST':
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
-            coreobjects = CoreObject.objects.all()
+            page_obj = coreobject_paginator(request)
             data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
-                'coreobjects': coreobjects
+                'page_obj': page_obj,
             })
         else:
             data['form_is_valid'] = False
@@ -35,6 +70,10 @@ def save_coreobject_form(request, form, template_name):
 
 
 def coreobject_create(request):
+    """
+    View to handle the submitted object's creation form.
+    After the object creation it returns JsonResponse with an updated data used by ajax (coreobjects.js).
+    """
     if request.method == 'POST':
         form = CoreObjectModelForm(request.POST)
     else:
@@ -43,6 +82,10 @@ def coreobject_create(request):
 
 
 def coreobject_update(request, pk):
+    """
+    View to handle the submitted object's updating form.
+    After the object updating it returns JsonResponse with an updated data used by ajax (coreobjects.js).
+    """
     coreobject = get_object_or_404(CoreObject, pk=pk)
     if request.method == 'POST':
         form = CoreObjectModelForm(request.POST, instance=coreobject)
@@ -52,14 +95,18 @@ def coreobject_update(request, pk):
 
 
 def coreobject_delete(request, pk):
+    """
+    View to handle the submitted object's deletion form.
+    After the object deletion it returns JsonResponse with an updated data used by ajax (coreobjects.js).
+    """
     coreobject = get_object_or_404(CoreObject, pk=pk)
     data = dict()
     if request.method == 'POST':
         coreobject.delete()
         data['form_is_valid'] = True
-        coreobjects = CoreObject.objects.all()
+        page_obj = CoreObject.objects.all()
         data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
-            'coreobjects': coreobjects
+            'page_obj': page_obj
         })
     else:
         context = {'coreobject': coreobject}

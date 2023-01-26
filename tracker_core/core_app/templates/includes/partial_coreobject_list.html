@@ -1,4 +1,4 @@
-{% for coreobject in coreobjects %}
+{% for coreobject in page_obj %}
     <tr class="table-success">
         {% if coreobject.status == 'G' %}
             <td class="bg-success">{{ coreobject.status }}</td>
