@@ -62,6 +62,7 @@ class CoreObject(models.Model):
     _measure_limit = models.IntegerField(
         null=False,
         blank=False,
+        verbose_name='Measure limit'
 
     )
     measure_unit = models.CharField(
