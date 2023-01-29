@@ -28,7 +28,7 @@ def coreobject_paginator(request):
     - coreobject_list()
     - save_coreobject_form()
     """
-    coreobjects = CoreObject.objects.all()
+    coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
     paginator = Paginator(coreobjects, 10)  # Show 10 coreobjects per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

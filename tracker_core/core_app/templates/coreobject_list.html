@@ -50,22 +50,23 @@
 
     <p>
     <button type="button" class="btn btn-primary js-create-coreobject" data-url="{% url 'coreobject-add' %}">
+      <span data-feather="plus-square" class="align-text-bottom"></span>
       New object
     </button>
     </p>
 
 
-    <table class="table table-sm table-responsive w-75 align-top" id="coreobject-table">
+    <table class="table w-75" id="coreobject-table">
     <thead>
     <tr class="table-active align-top">
-      <th scope="col">Status</th>
-      <th scope="col">Name</th>
-      <th scope="col">Dataset</th>
-      <th scope="col">Measure</th>
-      <th scope="col">Description</th>
-      <th scope="col">Responsible</th>
-      <th scope="col">Lifelong period</th>
-      <th scope="col">Actions</th>
+      <th scope="col" class="col-1">Status</th>
+      <th scope="col" class="col-1">Name</th>
+      <th scope="col" class="col-1">Dataset</th>
+      <th scope="col" class="col-1">Measure</th>
+      <th scope="col" class="col-2">Description</th>
+      <th scope="col" class="col-1">Responsible</th>
+      <th scope="col" class="col-1">Lifelong period</th>
+      <th scope="col" class="col-2">Actions</th>
     </tr>
     </thead>
     <tbody>
