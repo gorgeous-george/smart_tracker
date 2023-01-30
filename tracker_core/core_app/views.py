@@ -21,18 +21,26 @@ def test(request):
     return render(request, 'test.html')
 
 
-def coreobject_paginator(request):
+def coreobject_paginator(request, coreobjects):
     """
     Since paginator is used in more than one place, it was defined as a separate function.
     It is called by:
     - coreobject_list()
     - save_coreobject_form()
     """
-    coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
     paginator = Paginator(coreobjects, 10)  # Show 10 coreobjects per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return page_obj
+
+
+def get_data_for_chart(coreobjects):
+    chart_data = [['Status', 'Count']]
+    green_count = len(coreobjects.filter(status='G'))
+    orange_count = len(coreobjects.filter(status='O'))
+    red_count = len(coreobjects.filter(status='R'))
+    chart_data += ['Red', red_count], ['Orange', orange_count], ['Green', green_count]
+    return chart_data
 
 
 def coreobject_list(request):
@@ -40,8 +48,10 @@ def coreobject_list(request):
     View representing application's main page.
     Its default purpose is to return a paginated and filtered queryset of all coreobjects.
     """
-    page_obj = coreobject_paginator(request)
-    return render(request, 'coreobject_list.html', {'page_obj': page_obj})
+    coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
+    page_obj = coreobject_paginator(request, coreobjects)
+    chart_data = get_data_for_chart(coreobjects)
+    return render(request, 'coreobject_list.html', {'page_obj': page_obj, 'chart_data': chart_data})
 
 
 def save_coreobject_form(request, form, template_name):
@@ -59,7 +69,8 @@ def save_coreobject_form(request, form, template_name):
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
-            page_obj = coreobject_paginator(request)
+            coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
+            page_obj = coreobject_paginator(request, coreobjects)
             data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
                 'page_obj': page_obj,
             })
