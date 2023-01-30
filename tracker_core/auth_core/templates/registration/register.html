@@ -2,13 +2,13 @@
 
 {% block content %}
 
-  <form method="POST" class="form-group">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-
-    <button type="submit" class="btn btn-success">Register</button>
-  </form>
+    <br>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+        </table>
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
 
 {% endblock %}

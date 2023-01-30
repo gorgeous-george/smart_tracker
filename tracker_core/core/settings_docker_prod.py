@@ -40,9 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'debug_toolbar',
+    'widget_tweaks',
 
     'auth_core',
     'core_app',
+    'dashboard',
+    'sandbox',
+
 ]
 
 MIDDLEWARE = [
@@ -142,6 +146,11 @@ if DEBUG:
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'core_app/static'),
+    ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

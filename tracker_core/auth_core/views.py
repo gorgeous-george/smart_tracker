@@ -3,20 +3,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views.generic import DetailView, FormView, UpdateView
 
 
-def index(request):
-    """
-    View function for shop home page
-    It will be used for redirect from the below views
-    """
-    return render(request, 'index.html')
-
-
-class RegisterFormView(SuccessMessageMixin, generic.FormView):
+class RegisterFormView(SuccessMessageMixin, FormView):
     """
     Class-based view representing Register form for a new user
     """
@@ -37,7 +28,7 @@ class RegisterFormView(SuccessMessageMixin, generic.FormView):
         return super(RegisterFormView, self).form_valid(form)
 
 
-class UpdateProfile(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
+class UpdateProfile(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     Class-based view representing Profile Update feature
     """
@@ -55,7 +46,7 @@ class UpdateProfile(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView)
         return user
 
 
-class UserProfile(LoginRequiredMixin, generic.DetailView):
+class UserProfile(LoginRequiredMixin, DetailView):
     """
     Class-based view representing User Profile feature
     """

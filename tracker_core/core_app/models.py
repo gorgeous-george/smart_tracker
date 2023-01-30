@@ -16,7 +16,7 @@ class CoreObject(models.Model):
     class StatusChoices(models.TextChoices):
         """
         Choices for 'status' field.
-        Initially designed as simple colored pattern for dashboards
+        Initially designed as simple colored 'success-warning-danger' pattern for dashboards
         """
         GREEN = 'G'
         ORANGE = 'O'
@@ -32,7 +32,6 @@ class CoreObject(models.Model):
         null=False,
         blank=False,
         max_length=255,
-        unique=True,
     )
     description = models.CharField(
         null=False,
@@ -51,20 +50,26 @@ class CoreObject(models.Model):
         default='OTHER',
         help_text='You can use pre-defined dataset type (SUPPLIES, UTILITIES, HOME_ROUTINE, OTHER) or create your own',
     )
+    """
+    'measure' field defines quantity 
+    """
     measure = models.IntegerField(
         null=False,
         blank=False,
         default=0,
+        help_text='If not set, 1-Green, 2-Orange, 3-Red',
     )
     _measure_limit = models.IntegerField(
         null=False,
         blank=False,
+        verbose_name='Measure limit'
+
     )
     measure_unit = models.CharField(
         null=False,
         blank=False,
         max_length=255,
-        default='if not set, 1 is Green, 2 is Orange, 3 is Red'
+        default='unit',
     )
     status = models.CharField(
         null=False,
@@ -85,3 +90,7 @@ class CoreObject(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('coreobject-detail', kwargs={'pk': self.pk})

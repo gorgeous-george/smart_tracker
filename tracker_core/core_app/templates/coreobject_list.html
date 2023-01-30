@@ -1,0 +1,101 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+
+    <!-- Custom styles for Google Pie Chart -->
+    <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet">
+
+{% endblock extra_css %}
+
+{% block extra_js %}
+
+    <!-- JS scripts for interactive ajax requests -->
+    <script src="{% static 'assets/js/coreobjects.js' %}"></script>
+    <script src="{% static 'assets/js/piechart.js' %}"></script>
+
+    <!-- JS script for Google Pie Chart -->
+    <script type="text/javascript" src="{% static 'assets/js/loader.js' %}"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{ chart_data|safe }});
+
+        var options = {
+          title: 'title text',
+          is3D: false,
+          pieHole: 0.5,
+          chartArea:{left:20,top:20,width:'100%',height:'100%'},
+          colors:['#b53a1b','#ffaa00','#03701f']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endblock extra_js%}
+
+{% block content %}
+
+    <br>
+
+    {% if user %}
+        <h2> HELLO {{ user }} </h2>
+    {% else %}
+        <h2> HELLO STRANGER </h2>
+    {% endif %}
+
+    <br>
+
+    <!-- Chart table -->
+     <table class="table table-bordered w-75" id="dashboard-table">
+
+          <thead>
+            <tr>
+              <th scope="col">Dashboard</th>
+              <th scope="col">Filters</th>
+            </tr>
+          </thead>
+          {% include 'includes/partial_chart.html' %}
+        </table>
+
+        <br>
+
+    <!-- "New object" button -->
+    <p>
+    <button type="button" class="btn btn-success js-create-coreobject" data-url="{% url 'coreobject-add' %}">
+      <span data-feather="plus-square" class="align-text-bottom"></span>
+      New object
+    </button>
+    </p>
+
+    <!-- Data table -->
+    <table class="table w-75" id="coreobject-table">
+    <thead>
+    <tr class="table-active align-top">
+      <th scope="col" class="col-1">Status</th>
+      <th scope="col" class="col-1">Name</th>
+      <th scope="col" class="col-1">Dataset</th>
+      <th scope="col" class="col-1">Measure</th>
+      <th scope="col" class="col-2">Description</th>
+      <th scope="col" class="col-1">Responsible</th>
+      <th scope="col" class="col-1">Lifelong period</th>
+      <th scope="col" class="col-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_coreobject_list.html' %}
+    </tbody>
+    </table>
+
+    <div class="modal fade" id="modal-coreobject">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
