@@ -3,12 +3,26 @@
 {% block content %}
 
     <br>
-    <h1> Welcome to SMART tracker </h1>
-    <h2> HELLO {{ user }} </h2>
+    <h1>
+        Welcome to
+        <b data-toggle="popover" title="The SMART stands for Specific, Measurable, Achievable, Relevant, and Time-Bound.
+Defining these parameters as they pertain to your goal helps ensure that your objectives
+are attainable within a certain time frame.">SMART </b>
+        tracker
+    </h1>
 
     {% if user.is_authenticated %}
-        Start page, sandbox, dashboard, something
+        <h2> HELLO {{ user }} </h2>
+        <br>
+        <p><h4>
+        This is a tracker of literally any thing!<br>
+        First time at this website? Check the <a href="{%  url 'tutorial' %}">tutorial</a> <br>
+        <br>
+        Otherwise, proceed to your <a href="{%  url 'coreobject-list' %}">dashboard</a> or <br>
+        create new dataset in <a href="{%  url 'sandbox' %}">sandbox</a>.
+        </h4></p>
     {% else %}
+        <h2> HELLO {{ user }} </h2>
         Please <a href="{% url 'login' %}">login</a>
         or <a href="{% url 'register' %}">register.</a>
     {% endif %}

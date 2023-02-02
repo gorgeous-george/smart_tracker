@@ -51,7 +51,12 @@ def coreobject_list(request):
     coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
     page_obj = coreobject_paginator(request, coreobjects)
     chart_data = get_data_for_chart(coreobjects)
-    return render(request, 'coreobject_list.html', {'page_obj': page_obj, 'chart_data': chart_data})
+    unique_obj_types = get_unique_obj_types()
+    return render(request, 'coreobject_list.html', {
+        'page_obj': page_obj,
+        'chart_data': chart_data,
+        'unique_obj_types': unique_obj_types,
+    })
 
 
 def save_coreobject_form(request, form, template_name):
@@ -138,3 +143,14 @@ def coreobject_filter(request, value):
         'page_obj': page_obj
     })
     return JsonResponse(data)
+
+
+def get_unique_obj_types():
+    unique_obj_types = CoreObject.objects.distinct().values_list('obj_type')
+    return unique_obj_types
+
+
+def tutorial(request):
+    return render(request, 'tutorial.html')
+
+

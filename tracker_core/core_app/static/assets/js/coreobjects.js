@@ -53,4 +53,6 @@ $(function () {
   $("#coreobject-table").on("click", ".js-delete-coreobject", loadForm);
   $("#modal-coreobject").on("submit", ".js-coreobject-delete-form", saveForm);
 
+
+
 });

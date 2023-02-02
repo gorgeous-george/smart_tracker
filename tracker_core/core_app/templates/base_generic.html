@@ -60,7 +60,7 @@
       <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
       {% if user.is_authenticated %}
             <div class="navbar-nav">
-                <div class="nav-item text-nowrap">
+                <div class="nav-item text-nowrap float-end">
                     <a class="nav-link px-3" href="{% url 'profile' %}">
                         Logged as: {{ user.get_username }}
                     </a>
@@ -110,6 +110,18 @@
               Dashboard
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'sandbox' %}">
+              <span data-feather="codesandbox" class="align-text-bottom"></span>
+              Sandbox
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'tutorial' %}">
+              <span data-feather="help-circle" class="align-text-bottom"></span>
+              Tutorial
+            </a>
+          </li>
         </ul>
       {% endif %}
       {% if user.is_staff %}
@@ -141,27 +153,9 @@
       {% block content %}
       {% endblock content %}
 
-        <!-- Paginator -->
+
         {% block pagination %}
-        {% if page_obj %}
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-              {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a></li>
-              <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
-              {% else %}
-              <li class="page-item disabled"> <a class="page-link">Previous</a> </li>
-              {% endif %}
-              <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.page_number }}">{{ page_obj.number }}</a></li>
-              {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-              <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a></li>
-              {% else %}
-              <li class="page-item disabled"> <a class="page-link">Next</a> </li>
-              {% endif %}
-          </ul>
-        </nav>
-        {% endif %}
+
         {% endblock pagination %}
 
       </main>

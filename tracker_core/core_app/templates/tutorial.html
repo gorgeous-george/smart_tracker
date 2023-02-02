@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <br>
+    <h1> Welcome to SMART tracker </h1>
+
+    {% if user.is_authenticated %}
+        <h2> HELLO {{ user }} </h2>
+        <br>
+        <h4><p>
+        The SMART stands for Specific, Measurable, Achievable, Relevant, and Time-Bound.<br>
+        Defining these parameters as they pertain to your goal helps ensure that your objectives<br>
+        are attainable within a certain time frame.<br><br>
+        Feel free to use our SMART engine to track any goal, task, or asset you want.<br><br>
+        You can start with pre-defined datasets, or create your own!<br>
+        <br>
+        By default we provide you with full set of things you need<br>
+        to keep eye on to have your house/apartment supplied, cleaned and paid.<br><br>
+        After creation your objects will be shown at the <a href="{%  url 'coreobject-list' %}">dashboard</a><br>
+        <br><b>Picture of default dashboard</b><br>
+        <br>
+        Use the <a href="{% url 'sandbox' %}">sandbox</a> to add/edit tracked objects.<br>
+        <br><b>Picture of sandbox</b><br>
+        </p>
+        </h4>
+    {% else %}
+        <h2> HELLO {{ user }} </h2>
+        Please <a href="{% url 'login' %}">login</a>
+        or <a href="{% url 'register' %}">register.</a>
+    {% endif %}
+
+{% endblock %}

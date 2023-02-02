@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
     'auth_core',
     'core_app',
-    'dashboard',
     'sandbox',
 ]
 
