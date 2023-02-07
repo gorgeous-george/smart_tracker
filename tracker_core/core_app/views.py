@@ -48,10 +48,10 @@ def coreobject_list(request):
     View representing application's main page.
     Its default purpose is to return a paginated and filtered queryset of all coreobjects.
     """
-    coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
+    coreobjects = CoreObject.objects.all()
     page_obj = coreobject_paginator(request, coreobjects)
     chart_data = get_data_for_chart(coreobjects)
-    unique_obj_types = get_unique_obj_types()
+    unique_obj_types = get_unique_datasets()
     return render(request, 'coreobject_list.html', {
         'page_obj': page_obj,
         'chart_data': chart_data,
@@ -74,7 +74,7 @@ def save_coreobject_form(request, form, template_name):
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
-            coreobjects = CoreObject.objects.all().order_by('status', 'obj_type', 'responsible', 'name')
+            coreobjects = CoreObject.objects.all()
             page_obj = coreobject_paginator(request, coreobjects)
             data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
                 'page_obj': page_obj,
@@ -145,9 +145,9 @@ def coreobject_filter(request, value):
     return JsonResponse(data)
 
 
-def get_unique_obj_types():
-    unique_obj_types = CoreObject.objects.distinct().values_list('obj_type')
-    return unique_obj_types
+def get_unique_datasets():
+    unique_datasets = CoreObject.objects.distinct().values_list('dataset')
+    return unique_datasets
 
 
 def tutorial(request):

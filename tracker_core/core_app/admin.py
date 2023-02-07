@@ -1,12 +1,17 @@
 from django.contrib import admin
 
-from core_app.models import CoreObject
+from core_app.models import Dataset, CoreObject
 
 
 class CoreObjectAdmin(admin.ModelAdmin):
-    list_filter = ('obj_type', 'status', 'responsible')
-    list_display = ('obj_type', 'name', 'status', 'responsible')
-    sortable_by = ('obj_type', 'status', 'responsible')
+    list_filter = ('dataset', 'status', 'responsible')
+    list_display = ('dataset', 'name', 'status', 'responsible')
+    sortable_by = ('dataset', 'status', 'responsible')
+
+
+class DatasetAdmin(admin.ModelAdmin):
+    list_display = ('dataset', 'description')
 
 
 admin.site.register(CoreObject, CoreObjectAdmin)
+admin.site.register(Dataset, DatasetAdmin)

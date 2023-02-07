@@ -1,18 +1,25 @@
 {% extends "base_generic.html" %}
 
+{% block placeholder %}Sandbox{% endblock placeholder %}
+
 {% block content %}
 
-    <br>
-    <h1> Welcome to SMART tracker </h1>
-
     {% if user.is_authenticated %}
-        <h2> HELLO {{ user }} </h2>
         <br>
-        <p><h4>
-        This is a sandbox to add/edit tracked objects.<br>
-        <br>Nice pretty form is here<br>
+        <p>
+        <h4>This is a sandbox to add/edit tracked objects.<br></h4>
+        Here you can start with prepared sets. <br>
+        Feel free to create your own datasets.<br>
         </p>
-        </h4>
+
+    <div class="w-50">
+    <form method="post" action="{% url 'sandbox' %}" class="js-sandbox-create-form">
+      {% csrf_token %}
+      {% include 'includes/partial_sandbox_form.html' %}
+      <button type="submit" class="btn btn-primary">Create dataset</button>
+    </form>
+    </div>
+
     {% else %}
         <h2> HELLO {{ user }} </h2>
         Please <a href="{% url 'login' %}">login</a>

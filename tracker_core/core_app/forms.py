@@ -11,9 +11,9 @@ class CoreObjectModelForm(forms.ModelForm):
         fields = [
             "name",
             "description",
-            "obj_type",
+            "dataset",
             "measure",
-            "_measure_limit",
+            "measure_limit",
             "measure_unit",
             "status",
             "lifelong_period",
