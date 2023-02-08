@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core_app.models import Dataset, CoreObject
+from dashboard.models import Dataset, CoreObject
 
 
 class CoreObjectAdmin(admin.ModelAdmin):

@@ -1,12 +1,25 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
 from sandbox.forms import DatasetForm
-from core_app.models import Dataset
+from dashboard.models import Dataset
 
 
-def sandbox(request):
+def sandbox_index(request):
+    dataset_list = get_dataset_list()
+    return render(request, 'sandbox.html',
+                  {'dataset_list': dataset_list},
+                  )
+
+
+def get_dataset_list():
+    dataset_list = Dataset.objects.all()
+    return dataset_list
+
+
+def create_dataset(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -14,10 +27,13 @@ def sandbox(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
+            dataset = form.cleaned_data['dataset']
+            description = form.cleaned_data['description']
             Dataset.objects.create(
-                dataset=form.cleaned_data['dataset'],
-                description=form.cleaned_data['description'],
+                dataset=dataset,
+                description=description,
             )
+            messages.success(request, f"Dataset '{dataset}' was created.")
             # redirect to a new URL:
             return HttpResponseRedirect(reverse('sandbox'))
 

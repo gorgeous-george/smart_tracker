@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'widget_tweaks',
 
     'auth_core',
-    'core_app',
+    'dashboard',
     'sandbox',
+    'tutorial',
 ]
 
 MIDDLEWARE = [
@@ -147,7 +148,7 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'core_app/static'),
+    os.path.join(BASE_DIR, 'dashboard/static'),
     ]
 
 # Default primary key field type

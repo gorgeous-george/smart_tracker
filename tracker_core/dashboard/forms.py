@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from core_app.models import CoreObject
+from dashboard.models import CoreObject
 
 
 class CoreObjectModelForm(forms.ModelForm):

@@ -3,8 +3,8 @@ from django.shortcuts import get_list_or_404, render, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from core_app.models import CoreObject
-from core_app.forms import CoreObjectModelForm
+from dashboard.models import CoreObject
+from dashboard.forms import CoreObjectModelForm
 
 
 def index(request):
@@ -149,8 +149,5 @@ def get_unique_datasets():
     unique_datasets = CoreObject.objects.distinct().values_list('dataset')
     return unique_datasets
 
-
-def tutorial(request):
-    return render(request, 'tutorial.html')
 
 

@@ -5,19 +5,73 @@
 {% block content %}
 
     {% if user.is_authenticated %}
-        <br>
-        <p>
-        <h4>This is a sandbox to add/edit tracked objects.<br></h4>
-        Here you can start with prepared sets. <br>
-        Feel free to create your own datasets.<br>
-        </p>
+    <br>
+    <p>
+    <h4>This is a sandbox to add/edit tracked objects.<br></h4>
+    Here you can start with prepared sets. <br>
+    Feel free to create your own datasets.<br>
+    </p>
 
-    <div class="w-50">
-    <form method="post" action="{% url 'sandbox' %}" class="js-sandbox-create-form">
-      {% csrf_token %}
-      {% include 'includes/partial_sandbox_form.html' %}
-      <button type="submit" class="btn btn-primary">Create dataset</button>
-    </form>
+    <!-- Container for List of all datasets existed in the DB -->
+    <div>
+
+    <p>
+    <button type="button" class="btn btn-success js-create-dataset" data-url="{% url 'dataset-add' %}">
+      <span data-feather="plus-square" class="align-text-bottom"></span>
+      New dataset
+    </button>
+    </p>
+
+    <table class="table w-75" id="dataset-table">
+    <thead>
+    <tr class="table-active align-top">
+      <th scope="col" class="col-1">Dataset</th>
+      <th scope="col" class="col-1">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_datasets_list.html' %}
+    </tbody>
+    </table>
+
+    </div>
+
+    <!-- Container for all objects associated with the selected dataset -->
+    <div>
+
+    <p>
+    <button type="button" class="btn btn-success js-create-coreobject" data-url="{% url 'coreobject-add' %}">
+      <span data-feather="plus-square" class="align-text-bottom"></span>
+      New object
+    </button>
+    </p>
+
+    <table class="table w-75" id="coreobject-table">
+    <thead>
+    <tr class="table-active align-top">
+      <th scope="col" class="col-1">Status</th>
+      <th scope="col" class="col-1">Name</th>
+      <th scope="col" class="col-1">Dataset</th>
+      <th scope="col" class="col-1">Measure</th>
+      <th scope="col" class="col-2">Description</th>
+      <th scope="col" class="col-1">Responsible</th>
+      <th scope="col" class="col-1">Lifelong period</th>
+      <th scope="col" class="col-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_coreobject_list.html' %}
+    </tbody>
+    </table>
+
+    </div>
+
+    <!-- Modal for the creation/update forms -->
+    <div class="modal fade" id="modal-sandbox">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
     </div>
 
     {% else %}

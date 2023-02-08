@@ -32,7 +32,10 @@
     </tr>
 {% empty %}
     <tr>
-        <td colspan="8" class="text-center bg-warning">No objects</td>
+        <td colspan="8" class="text-center bg-warning">
+            There are no objects.
+            Use the <a href="{% url 'sandbox' %}">sandbox</a> to add/edit tracked objects.
+        </td>
     </tr>
 {% endfor %}
 

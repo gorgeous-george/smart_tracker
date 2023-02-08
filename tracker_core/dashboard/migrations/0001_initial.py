@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(choices=[('G', 'Green'), ('O', 'Orange'), ('R', 'Red')], default='G', max_length=255)),
                 ('lifelong_period', models.IntegerField()),
                 ('responsible', models.CharField(max_length=255)),
-                ('dataset', models.ForeignKey(default='OTHER', on_delete=django.db.models.deletion.CASCADE, to='core_app.dataset')),
+                ('dataset', models.ForeignKey(default='OTHER', on_delete=django.db.models.deletion.CASCADE, to='dashboard.dataset')),
             ],
             options={
                 'ordering': ['status', 'dataset', 'responsible', 'name'],

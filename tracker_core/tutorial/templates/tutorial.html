@@ -1,0 +1,74 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block placeholder %}Tutorial{% endblock placeholder %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <br>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 w-75">
+          <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'SMART-goals.png' %}" class="card-img-top" alt="SMART concept">
+              <div class="card-body">
+                <h5 class="card-title">The concept</h5>
+                <p class="card-text">The SMART stands for Specific, Measurable, Achievable, Relevant, and Time-Bound.
+                    Defining these parameters as they pertain to your goal helps ensure that your objectives are attainable
+                    within a certain time frame.</p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">
+                    More details at
+                    <a href="https://en.wikipedia.org/wiki/SMART_criteria" target="_blank" rel="noopener norefferer">Wikipedia</a>.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'pie-example.png' %}" class="card-img-top" alt="Picture of default dashboard">
+              <div class="card-body">
+                <h5 class="card-title">Dashboard</h5>
+                <p class="card-text">
+                    By default we provide you with full set of things you need
+                    to keep eye on to have your house/apartment supplied, cleaned and paid.<br>
+                    Each status is monitored and represented by chart.
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">
+                    After creation your objects will be shown at the
+                    <a href="{%  url 'coreobject-list' %}">dashboard</a>.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'sandbox.png' %}" class="card-img-top" alt="Picture of sandbox">
+              <div class="card-body">
+                <h5 class="card-title">Sandbox</h5>
+                <p class="card-text">
+                    You can start with pre-defined datasets, or create your own!
+                    Feel free to use our SMART engine to track literally any thing.
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">
+                    Use the <a href="{% url 'sandbox' %}">sandbox</a> to add/edit datasets and objects.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    {% else %}
+        <h2> HELLO {{ user }} </h2>
+        Please <a href="{% url 'login' %}">login</a>
+        or <a href="{% url 'register' %}">register.</a>
+    {% endif %}
+
+{% endblock %}
