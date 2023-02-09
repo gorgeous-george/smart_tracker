@@ -19,7 +19,7 @@ def get_dataset_list():
     return dataset_list
 
 
-def create_dataset(request):
+def dataset_create(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -41,3 +41,11 @@ def create_dataset(request):
     else:
         form = DatasetForm()
     return render(request, 'sandbox.html', {'form': form})
+
+
+def dataset_update(request, pk):
+    return render(request, 'sandbox.html')
+
+
+def dataset_delete(request, pk):
+    return render(request, 'sandbox.html')

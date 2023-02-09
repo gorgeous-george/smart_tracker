@@ -16,17 +16,19 @@
     <div>
 
     <p>
-    <button type="button" class="btn btn-success js-create-dataset" data-url="{% url 'dataset-add' %}">
+    <button type="button" class="btn btn-sm btn-success js-create-dataset" data-url="{% url 'dataset-add' %}">
       <span data-feather="plus-square" class="align-text-bottom"></span>
       New dataset
     </button>
     </p>
 
-    <table class="table w-75" id="dataset-table">
+    <table class="table table-hover w-75" id="dataset-table">
     <thead>
     <tr class="table-active align-top">
-      <th scope="col" class="col-1">Dataset</th>
-      <th scope="col" class="col-1">Description</th>
+      <th scope="col" class="col-2">Show objects</th>
+      <th scope="col" class="col-4">Dataset</th>
+      <th scope="col" class="col-4">Description</th>
+      <th scope="col" class="col-2">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -40,7 +42,7 @@
     <div>
 
     <p>
-    <button type="button" class="btn btn-success js-create-coreobject" data-url="{% url 'coreobject-add' %}">
+    <button type="button" class="btn btn-sm btn-success js-create-coreobject" data-url="{% url 'coreobject-add' %}">
       <span data-feather="plus-square" class="align-text-bottom"></span>
       New object
     </button>

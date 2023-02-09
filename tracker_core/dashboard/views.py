@@ -3,7 +3,7 @@ from django.shortcuts import get_list_or_404, render, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from dashboard.models import CoreObject
+from dashboard.models import CoreObject, Dataset
 from dashboard.forms import CoreObjectModelForm
 
 
@@ -146,7 +146,7 @@ def coreobject_filter(request, value):
 
 
 def get_unique_datasets():
-    unique_datasets = CoreObject.objects.distinct().values_list('dataset')
+    unique_datasets = Dataset.objects.values_list('dataset')
     return unique_datasets
 
 

@@ -10,12 +10,12 @@
             <td>{{ coreobject.status }}</td>
         {% endif %}
         <td>{{ coreobject.name }}</td>
-        <td>{{ coreobject.obj_type }}</td>
-        <td>{{ coreobject.measure }}</td>
+        <td>{{ coreobject.dataset }}</td>
+        <td>{{ coreobject.measure }} {{ coreobject.measure_unit }}</td>
         <td>{{ coreobject.description }}</td>
         <td>{{ coreobject.responsible }}</td>
         <td>{{ coreobject.lifelong_period }}</td>
-        <td style="width: 150px">
+        <td>
             <button type="button"
                     class="btn btn-warning btn-sm js-update-coreobject"
                     data-url="{% url 'coreobject-update' coreobject.id %}">
