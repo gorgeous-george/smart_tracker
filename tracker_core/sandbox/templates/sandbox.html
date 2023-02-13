@@ -1,5 +1,19 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+
+
+{% block extra_js %}
+
+    <!-- JS scripts for interactive ajax requests -->
+    <script src="{% static 'assets/js/dataset_objects.js' %}"></script>
+
+{% endblock extra_js %}
+
 {% block placeholder %}Sandbox{% endblock placeholder %}
 
 {% block content %}
@@ -42,13 +56,13 @@
     <div>
 
     <p>
-    <button type="button" class="btn btn-sm btn-success js-create-coreobject" data-url="{% url 'coreobject-add' %}">
+    <button type="button" class="btn btn-sm btn-success js-create-dataset-object" data-url="{% url 'dataset-object-add' %}">
       <span data-feather="plus-square" class="align-text-bottom"></span>
       New object
     </button>
     </p>
 
-    <table class="table w-75" id="coreobject-table">
+    <table class="table w-75 table-hover" id="dataset-object-table">
     <thead>
     <tr class="table-active align-top">
       <th scope="col" class="col-1">Status</th>
@@ -62,9 +76,30 @@
     </tr>
     </thead>
     <tbody>
-      {% include 'includes/partial_coreobject_list.html' %}
+      {% include 'includes/partial_dataset_object_list.html' %}
     </tbody>
     </table>
+
+     <!-- Paginator -->
+    {% if page_obj %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+          {% else %}
+          <li class="page-item disabled"> <a class="page-link">Previous</a> </li>
+          {% endif %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.page_number }}">{{ page_obj.number }}</a></li>
+          {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a></li>
+          {% else %}
+          <li class="page-item disabled"> <a class="page-link">Next</a> </li>
+          {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
 
     </div>
 

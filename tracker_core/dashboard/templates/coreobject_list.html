@@ -10,7 +10,6 @@
 {% block extra_js %}
 
     <!-- JS scripts for interactive ajax requests -->
-    <script src="{% static 'assets/js/coreobjects.js' %}"></script>
     <script src="{% static 'assets/js/piechart.js' %}"></script>
 
     <!-- JS script for Google Pie Chart -->
@@ -57,14 +56,6 @@
 
         <br>
 
-    <!-- "New object" button -->
-    <p>
-    <button type="button" class="btn btn-sm btn-success js-create-coreobject" data-url="{% url 'coreobject-add' %}">
-      <span data-feather="plus-square" class="align-text-bottom"></span>
-      New object
-    </button>
-    </p>
-
     <!-- Data table -->
     <table class="table w-75" id="coreobject-table">
     <thead>
@@ -76,7 +67,6 @@
       <th scope="col" class="col-2">Description</th>
       <th scope="col" class="col-1">Responsible</th>
       <th scope="col" class="col-1">Lifelong period</th>
-      <th scope="col" class="col-2">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -104,14 +94,6 @@
       </ul>
     </nav>
     {% endif %}
-
-    <!-- Modal for "New object" and "Edit" forms -->
-    <div class="modal fade" id="modal-coreobject">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            </div>
-        </div>
-    </div>
 
     {% else %}
         <h2> HELLO {{ user }} </h2>

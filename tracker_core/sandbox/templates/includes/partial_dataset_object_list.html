@@ -1,5 +1,5 @@
 {% for coreobject in page_obj %}
-    <tr class="table-success">
+    <tr>
         {% if coreobject.status == 'G' %}
             <td class="bg-success">{{ coreobject.status }}</td>
         {% elif coreobject.status == 'O' %}
@@ -15,12 +15,26 @@
         <td>{{ coreobject.description }}</td>
         <td>{{ coreobject.responsible }}</td>
         <td>{{ coreobject.lifelong_period }}</td>
+        <td>
+            <button type="button"
+                    class="btn btn-warning btn-sm js-update-dataset-object"
+                    data-url="{% url 'dataset-object-update' coreobject.id %}">
+                    <span data-feather="edit" class="align-text-bottom"></span>
+                    Edit
+            </button>
+            <button type="button"
+                    class="btn btn-danger btn-sm js-delete-dataset-object"
+                    data-url="{% url 'dataset-object-delete' coreobject.id %}">
+                    <span data-feather="delete" class="align-text-bottom"></span>
+                    Delete
+            </button>
+        </td>
     </tr>
 {% empty %}
     <tr>
         <td colspan="8" class="text-center bg-warning">
             There are no objects.
-            Use the <a href="{% url 'sandbox' %}">sandbox</a> to add/edit tracked objects.
+            Use the "New Object" button to add/edit tracked objects.
         </td>
     </tr>
 {% endfor %}
