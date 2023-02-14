@@ -1,12 +1,17 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from dashboard.models import CoreObject
+from dashboard.models import CoreObject, Dataset
 
 
-class DatasetForm(forms.Form):
-    dataset = forms.CharField(label='dataset_name', max_length=100)
-    description = forms.CharField(label='dataset_description', max_length=100)
+class DatasetModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Dataset
+        fields = [
+            "dataset",
+            "description",
+        ]
 
 
 class DatasetObjectModelForm(forms.ModelForm):

@@ -13,14 +13,12 @@ class Dataset(models.Model):
         null=False,
         blank=False,
         max_length=255,
-        default='OTHER',
         help_text='You can use pre-defined dataset type (SUPPLIES, UTILITIES, HOME_ROUTINE, OTHER) or create your own',
     )
     description = models.CharField(
         null=False,
         blank=False,
         max_length=255,
-        default='This is dataset description.',
         help_text='You can describe the dataset purpose or any other valuable details',
     )
 
