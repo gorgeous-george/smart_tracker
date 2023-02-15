@@ -109,6 +109,20 @@ def dataset_delete(request, pk):
     return JsonResponse(data)
 
 
+def reload_dataset_object_table(request):
+    """
+    If user updates/deletes a dataset having related objects, these objects should be updated/deleted as well.
+    This function returns updated list of dataset objects to reload objects table.
+    """
+    data = dict()
+    object_list = CoreObject.objects.all()
+    paginated_object_list = sandbox_paginator(request, object_list)
+    data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
+        'paginated_object_list': paginated_object_list,
+    })
+    return JsonResponse(data)
+
+
 # functions below are created to handle DATASET OBJECTS' buttons "New object", "Edit", "Delete"
 def save_dataset_object_form(request, form, template_name):
     """

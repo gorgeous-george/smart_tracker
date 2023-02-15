@@ -38,6 +38,17 @@ $(function () {
     return false;
   };
 
+  var reload_dataset_objects_table = function () {
+    $.ajax({
+      url: 'objects/reload/',
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        $("#dataset-object-table tbody").html(data.html_dataset_object_list);
+      }
+    });
+  };
+
 
   /* Binding */
 
@@ -48,9 +59,11 @@ $(function () {
   // Update coreobject
   $("#dataset-table").on("click", ".js-update-dataset", loadForm);
   $("#modal-sandbox").on("submit", ".js-dataset-update-form", saveForm);
+  $("#modal-sandbox").on("submit", ".js-dataset-update-form", reload_dataset_objects_table);
 
   // Delete coreobject
   $("#dataset-table").on("click", ".js-delete-dataset", loadForm);
   $("#modal-sandbox").on("submit", ".js-dataset-delete-form", saveForm);
+  $("#modal-sandbox").on("submit", ".js-dataset-delete-form", reload_dataset_objects_table);
 
 });
