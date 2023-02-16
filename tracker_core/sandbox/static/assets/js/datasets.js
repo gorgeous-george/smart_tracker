@@ -1,3 +1,12 @@
+$(document).ready(function(){
+
+    // Set cache = false for all jquery ajax requests.
+    $.ajaxSetup({
+        cache: false,
+    });
+
+})
+
 $(function () {
 
   /* Functions */
@@ -49,21 +58,36 @@ $(function () {
     });
   };
 
+  var filter_dataset_objects_table = function () {
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        $("#dataset-object-table tbody").html(data.html_dataset_object_list);
+      }
+    });
+  };
+
 
   /* Binding */
 
-  // Create coreobject
+  // Create dataset
   $(".js-create-dataset").click(loadForm);
   $("#modal-sandbox").on("submit", ".js-dataset-create-form", saveForm);
 
-  // Update coreobject
+  // Update dataset and reload objects table
   $("#dataset-table").on("click", ".js-update-dataset", loadForm);
   $("#modal-sandbox").on("submit", ".js-dataset-update-form", saveForm);
   $("#modal-sandbox").on("submit", ".js-dataset-update-form", reload_dataset_objects_table);
 
-  // Delete coreobject
+  // Delete dataset and reload objects table
   $("#dataset-table").on("click", ".js-delete-dataset", loadForm);
   $("#modal-sandbox").on("submit", ".js-dataset-delete-form", saveForm);
   $("#modal-sandbox").on("submit", ".js-dataset-delete-form", reload_dataset_objects_table);
+
+  // Filter objects table by selected dataset
+  $(".js-show-objects").click(filter_dataset_objects_table);
 
 });

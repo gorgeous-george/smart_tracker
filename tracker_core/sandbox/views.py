@@ -35,6 +35,19 @@ def get_dataset_objects(dataset):
     return dataset_objects
 
 
+def dataset_filter_object_table(request, pk):
+    """
+    This function returns filtered list of dataset objects as response to button "Show objects".
+    """
+    data = dict()
+    object_list = CoreObject.objects.filter(dataset_id=pk)
+    paginated_object_list = sandbox_paginator(request, object_list)
+    data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
+        'paginated_object_list': paginated_object_list,
+    })
+    return JsonResponse(data)
+
+
 # functions below are created to handle DATASET's buttons "New dataset", "Edit", "Delete"
 def save_dataset_form(request, form, template_name):
     """

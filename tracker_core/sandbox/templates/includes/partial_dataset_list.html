@@ -1,6 +1,10 @@
 {% for dataset in paginated_dataset_list %}
 <tr>
-    <td><button type="button" class="btn-sm btn-light">see objects</button></td>
+    <td><button type="button"
+                class="btn-sm btn-light js-show-objects"
+                data-url="{% url 'dataset-object-filter' dataset.pk %}">
+        see objects
+    </button></td>
     <td>{{ dataset.dataset }}</td>
     <td>{{ dataset.description }}</td>
     <td style="width: 150px">

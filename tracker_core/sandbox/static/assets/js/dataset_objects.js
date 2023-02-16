@@ -1,3 +1,12 @@
+$(document).ready(function(){
+
+    // Set cache = false for all jquery ajax requests.
+    $.ajaxSetup({
+        cache: false,
+    });
+
+})
+
 $(function () {
 
   /* Functions */
