@@ -5,32 +5,31 @@
             <div id="piechart_3d" style="width:400px; height:200px;"></div>
         </td>
         <td>
-        By dataset
-            <select class="form-select" multiple aria-label="multiple select dataset">
-                {% for obj_type in unique_obj_types %}
-                <option value={{ obj_type }}>{{ obj_type }}</option>
+            By dataset
+            <div class="form-check">
+                {% for dataset_name in unique_dataset_names %}
+                    <input class="form-check-input" type="checkbox" value="{{ dataset_name }}" id="{{ dataset_name }}">
+                    <label class="form-check-label" for="{{ dataset_name }}">{{ dataset_name }}</label>
                 {% endfor %}
-            </select>
-        button
-        </td>
-
-        <td>
-        By status
-            <select class="form-select" multiple aria-label="multiple select dataset">
-                {% for obj_type in unique_obj_types %}
-                <option value={{ obj_type }}>{{ obj_type }}</option>
-                {% endfor %}
-            </select>
-        button
+            </div>
         </td>
         <td>
-        By responsible
-            <select class="form-select" multiple aria-label="multiple select dataset">
-                {% for obj_type in unique_obj_types %}
-                <option value={{ obj_type }}>{{ obj_type }}</option>
+            By status
+            <div class="form-check">
+                {% for dataset_name in unique_dataset_names %}
+                    <input class="form-check-input" type="checkbox" value="{{ dataset_name }}" id="{{ dataset_name }}">
+                    <label class="form-check-label" for="{{ dataset_name }}">{{ dataset_name }}</label>
                 {% endfor %}
-            </select>
-        button
+            </div>
+        </td>
+        <td>
+            By responsible
+            <div class="form-check">
+                {% for dataset_name in unique_dataset_names %}
+                    <input class="form-check-input" type="checkbox" value="{{ dataset_name }}" id="{{ dataset_name }}">
+                    <label class="form-check-label" for="{{ dataset_name }}">{{ dataset_name }}</label>
+                {% endfor %}
+            </div>
         </td>
     </tr>
 </tbody>

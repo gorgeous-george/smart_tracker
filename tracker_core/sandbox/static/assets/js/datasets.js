@@ -70,6 +70,17 @@ $(function () {
     });
   };
 
+  var show_all_objects = function () {
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        $("#dataset-object-table tbody").html(data.html_dataset_object_list);
+      }
+    });
+  };
 
   /* Binding */
 
@@ -89,5 +100,9 @@ $(function () {
 
   // Filter objects table by selected dataset
   $(".js-show-objects").click(filter_dataset_objects_table);
+
+  // Clear filter, i.e. show all objects
+  $(".js-show-all-objects").click(show_all_objects);
+
 
 });

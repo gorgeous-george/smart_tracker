@@ -1,20 +1,20 @@
 {% for coreobject in paginated_object_list %}
     <tr>
-        {% if coreobject.status == 'G' %}
-            <td class="bg-success">{{ coreobject.status }}</td>
-        {% elif coreobject.status == 'O' %}
-            <td class="bg-warning">{{ coreobject.status }}</td>
-        {% elif coreobject.status == 'R' %}
-            <td class="bg-danger">{{ coreobject.status }}</td>
-        {% else %}
-            <td>{{ coreobject.status }}</td>
+        {% if coreobject.status == 'Green' %}
+            <td class="bg-success"> </td>
+        {% elif coreobject.status == 'Orange' %}
+            <td class="bg-warning"> </td>
+        {% elif coreobject.status == 'Red' %}
+            <td class="bg-danger"> </td>
         {% endif %}
         <td>{{ coreobject.name }}</td>
         <td>{{ coreobject.dataset }}</td>
-        <td>{{ coreobject.measure }} {{ coreobject.measure_unit }}</td>
+        <td>{{ coreobject.measure }}</td>
+        <td>{{ coreobject.measure_limit }}</td>
+        <td>{{ coreobject.measure_description }}</td>
         <td>{{ coreobject.description }}</td>
-        <td>{{ coreobject.responsible }}</td>
-        <td>{{ coreobject.lifelong_period }}</td>
+        <td>{{ coreobject.responsible.username }}</td>
+        <td>{{ coreobject.timeframe }}</td>
         <td>
             <button type="button"
                     class="btn btn-warning btn-sm js-update-dataset-object"
@@ -32,7 +32,7 @@
     </tr>
 {% empty %}
     <tr>
-        <td colspan="8" class="text-center bg-warning">
+        <td colspan="12" class="text-center bg-warning">
             There are no objects.
         </td>
     </tr>

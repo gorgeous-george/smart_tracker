@@ -1,20 +1,19 @@
 {% for coreobject in page_obj %}
     <tr class="table-success">
-        {% if coreobject.status == 'G' %}
-            <td class="bg-success">{{ coreobject.status }}</td>
-        {% elif coreobject.status == 'O' %}
-            <td class="bg-warning">{{ coreobject.status }}</td>
-        {% elif coreobject.status == 'R' %}
-            <td class="bg-danger">{{ coreobject.status }}</td>
+        {% if coreobject.status == 'Green' %}
+            <td class="bg-success"> </td>
+        {% elif coreobject.status == 'Orange' %}
+            <td class="bg-warning"> </td>
+        {% elif coreobject.status == 'Red' %}
+            <td class="bg-danger"> </td>
         {% else %}
             <td>{{ coreobject.status }}</td>
         {% endif %}
         <td>{{ coreobject.name }}</td>
         <td>{{ coreobject.dataset }}</td>
-        <td>{{ coreobject.measure }} {{ coreobject.measure_unit }}</td>
         <td>{{ coreobject.description }}</td>
-        <td>{{ coreobject.responsible }}</td>
-        <td>{{ coreobject.lifelong_period }}</td>
+        <td>{{ coreobject.responsible.username }}</td>
+        <td>{{ coreobject.timeframe }}</td>
     </tr>
 {% empty %}
     <tr>

@@ -10,6 +10,7 @@ from sandbox.views import (
     dataset_object_delete,
     reload_dataset_object_table,
     dataset_filter_object_table,
+    dataset_show_all_objects,
 )
 
 
@@ -22,5 +23,6 @@ urlpatterns = [
     path('objects/<uuid:pk>/update/', dataset_object_update, name='dataset-object-update'),
     path('objects/<uuid:pk>/delete/', dataset_object_delete, name='dataset-object-delete'),
     path('objects/reload/', reload_dataset_object_table, name='dataset-object-reload'),
+    path('objects/all/', dataset_show_all_objects, name='dataset-object-all'),
     path('datasets/<int:pk>/filter/', dataset_filter_object_table, name='dataset-object-filter'),
     ]

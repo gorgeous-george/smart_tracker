@@ -7,11 +7,13 @@ from django.template.loader import render_to_string
 from sandbox.forms import DatasetModelForm, DatasetObjectModelForm
 from dashboard.models import CoreObject, Dataset
 
+# todo: add a Class with @login_required and @permission_required decorators for all view functions in this module
+# todo: add filter to all queryset requests : Coreobject.responsible == self.request.user
+
 
 def sandbox_index(request):
     """
     base view returning all datasets and all objects
-    todo: to add "if filtered by 'see objects' button - return filtered objects only , else return all"
     """
     dataset_list = Dataset.objects.all()
     paginated_dataset_list = sandbox_paginator(request, dataset_list)
@@ -30,9 +32,17 @@ def sandbox_paginator(request, objects):
     return page_obj
 
 
-def get_dataset_objects(dataset):
-    dataset_objects = CoreObject.objects.filter(dataset=dataset)
-    return dataset_objects
+def dataset_show_all_objects(request):
+    """
+    This function returns list of all objects as response to button "Show all objects".
+    """
+    data = dict()
+    object_list = CoreObject.objects.all()
+    paginated_object_list = sandbox_paginator(request, object_list)
+    data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
+        'paginated_object_list': paginated_object_list,
+    })
+    return JsonResponse(data)
 
 
 def dataset_filter_object_table(request, pk):
@@ -126,6 +136,7 @@ def reload_dataset_object_table(request):
     """
     If user updates/deletes a dataset having related objects, these objects should be updated/deleted as well.
     This function returns updated list of dataset objects to reload objects table.
+    todo: bug_0003 to update view for cases when only one dataset is selected, so we would need to return only this dataset's objects
     """
     data = dict()
     object_list = CoreObject.objects.all()

@@ -1,25 +1,26 @@
 import uuid
 
 from django.db import models
+from django.conf import settings
 
 
 class Dataset(models.Model):
-    """
-    'Dataset' class has been initially designed as identifier of a dataset.
-    It is planned that users will use pre-defined datasets (SUPPLIES, UTILITIES, HOME_ROUTINE, OTHER)
-    as well as create their own.
-    """
     dataset = models.CharField(
         null=False,
         blank=False,
         max_length=255,
-        help_text='You can use pre-defined dataset type (SUPPLIES, UTILITIES, HOME_ROUTINE, OTHER) or create your own',
+        help_text='Give a name to your dataset',
     )
     description = models.CharField(
         null=False,
         blank=False,
         max_length=255,
-        help_text='You can describe the dataset purpose or any other valuable details',
+        help_text='Describe the dataset purpose or any other valuable details',
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        help_text='Current user name',
     )
 
     def __str__(self):
@@ -29,21 +30,30 @@ class Dataset(models.Model):
 class CoreObject(models.Model):
     """
     Core model that has all required fields to reflect SMART concept, namely:
-    - Specific (id, name, description, obj_type)
-    - Measurable (measure, _measure_limit, measure_unit)
+    - Specific (id, name, description, dataset)
+    - Measurable (measure, measure_limit, measure_description)
     - Assignable (responsible)
     - Realistic (status)
-    - Time-related (lifelong_period)
+    - Time-related (time_frame)
     """
 
-    class StatusChoices(models.TextChoices):
+    class GreenOrangeRedChoices(models.TextChoices):
         """
-        Choices for 'status' field.
+        Choices for 'Measure', 'Measure limit', 'Status' field.
         Initially designed as simple colored 'success-warning-danger' pattern for dashboards
         """
-        GREEN = 'G'
-        ORANGE = 'O'
-        RED = 'R'
+        GREEN = 'Green'
+        ORANGE = 'Orange'
+        RED = 'Red'
+
+    class TimeFrameChoices(models.TextChoices):
+        """
+        Choices for 'Time Frame' field.
+        """
+        DAY = 'Day'
+        WEEK = 'Week'
+        MONTH = 'Month'
+        YEAR = 'Year'
 
     id = models.UUIDField(
         primary_key=True,
@@ -55,11 +65,13 @@ class CoreObject(models.Model):
         null=False,
         blank=False,
         max_length=255,
+        help_text='Add the name of your task/goal/object',
     )
     description = models.CharField(
         null=False,
         blank=False,
         max_length=255,
+        help_text='Add short description of your task/goal/object',
     )
     """
     Identifier of object's relation to appropriate dataset 
@@ -67,49 +79,61 @@ class CoreObject(models.Model):
     dataset = models.ForeignKey(
         Dataset,
         on_delete=models.CASCADE,
-        default='OTHER',
+        help_text='Choose appropriate dataset for this task/goal/object',
     )
-    """
-    'measure' field defines quantity if such applicable.
-    Otherwise it should be set as '1', or '2', or '3' reflecting Red-Orange-Green model.
-    """
-    measure = models.IntegerField(
+    measure = models.CharField(
         null=False,
         blank=False,
-        default=0,
-        help_text='If not set, 1-Green, 2-Orange, 3-Red',
+        max_length=6,
+        choices=GreenOrangeRedChoices.choices,
+        default=GreenOrangeRedChoices.GREEN,
+        help_text='Evaluate level of implementation by 3 levels according to measure description of your '
+                  'task/goal/object',
     )
     """
-    'measure_limit' field is designed as a frames to evaluate the object's status
+    'measure_limit' field is designed as minimum satisfying level to evaluate the object's status
     by comparing the 'measure_limit' with current 'measure' value
     """
-    measure_limit = models.IntegerField(
+    measure_limit = models.CharField(
         null=False,
         blank=False,
-        verbose_name='Measure limit'
-
+        max_length=6,
+        choices=GreenOrangeRedChoices.choices,
+        default=GreenOrangeRedChoices.ORANGE,
+        help_text='Choose minimum satisfying level of your task/goal/object status',
     )
-    measure_unit = models.CharField(
+    measure_description = models.CharField(
         null=False,
         blank=False,
         max_length=255,
-        default='unit',
+        default='If not set, 1-Green, 2-Orange, 3-Red',
+        help_text='Describe you 3-level pattern for evaluation of your task/goal/object.'
+                  'Based on these 3 levels the task/goal/object would have appropriate'
+                  'position/color at the chart',
     )
     status = models.CharField(
         null=False,
         blank=False,
-        max_length=255,
-        choices=StatusChoices.choices,
-        default=StatusChoices.GREEN
+        max_length=6,
+        choices=GreenOrangeRedChoices.choices,
+        default=GreenOrangeRedChoices.GREEN,
+        help_text='Status of implementation/performing/achieving of your task/goal/object.'
+                  'Status level is calculated comparing measure to measure limit.'
+                  'Based on status level the task/goal/object would have appropriate'
+                  'position/color at the chart',
     )
-    lifelong_period = models.IntegerField(
+    timeframe = models.CharField(
         null=False,
         blank=False,
+        max_length=5,
+        choices=TimeFrameChoices.choices,
+        default=TimeFrameChoices.DAY,
+        help_text='Choose a deadline/timeframe of your task/goal/object implementation.'
     )
-    responsible = models.CharField(
-        null=False,
-        blank=False,
-        max_length=255,
+    responsible = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        help_text='Current user name',
     )
 
     def __str__(self):

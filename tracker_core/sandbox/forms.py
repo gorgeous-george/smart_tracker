@@ -11,6 +11,7 @@ class DatasetModelForm(forms.ModelForm):
         fields = [
             "dataset",
             "description",
+            "owner"
         ]
 
 
@@ -24,9 +25,8 @@ class DatasetObjectModelForm(forms.ModelForm):
             "dataset",
             "measure",
             "measure_limit",
-            "measure_unit",
-            "status",
-            "lifelong_period",
+            "measure_description",
+            "timeframe",
             "responsible",
         ]
 

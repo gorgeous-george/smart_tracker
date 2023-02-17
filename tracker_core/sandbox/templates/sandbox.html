@@ -37,13 +37,22 @@
     </button>
     </p>
 
+    <p>
+    <button type="button"
+                class="btn-sm btn-light js-show-all-objects"
+                data-url="{% url 'dataset-object-all' %}">
+        Show all objects
+    </button>
+    </p>
+
+
     <table class="table table-hover w-75" id="dataset-table">
     <thead>
     <tr class="table-active align-top">
-      <th scope="col" class="col-2">Show objects</th>
+      <th scope="col" class="col-2">Filter objects</th>
       <th scope="col" class="col-4">Dataset</th>
       <th scope="col" class="col-4">Description</th>
-      <th scope="col" class="col-2">Actions</th>
+      <th scope="col" class="col-3">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -91,9 +100,11 @@
       <th scope="col" class="col-1">Name</th>
       <th scope="col" class="col-1">Dataset</th>
       <th scope="col" class="col-1">Measure</th>
+      <th scope="col" class="col-1">Measure limit</th>
+      <th scope="col" class="col-1">Measure unit</th>
       <th scope="col" class="col-2">Description</th>
       <th scope="col" class="col-1">Responsible</th>
-      <th scope="col" class="col-1">Lifelong period</th>
+      <th scope="col" class="col-1">Time frame</th>
       <th scope="col" class="col-2">Actions</th>
     </tr>
     </thead>

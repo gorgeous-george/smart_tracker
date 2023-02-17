@@ -6,6 +6,10 @@ from django.template.loader import render_to_string
 from dashboard.models import CoreObject, Dataset
 
 
+# todo: add a Class with @login_required and @permission_required decorators for all view functions in this module
+# todo: add filter to all queryset requests : Coreobject.responsible == self.request.user
+
+
 def index(request):
     """
     Base view function for the home page.
@@ -35,9 +39,9 @@ def coreobject_paginator(request, coreobjects):
 
 def get_data_for_chart(coreobjects):
     chart_data = [['Status', 'Count']]
-    green_count = len(coreobjects.filter(status='G'))
-    orange_count = len(coreobjects.filter(status='O'))
-    red_count = len(coreobjects.filter(status='R'))
+    green_count = len(coreobjects.filter(status='Green'))
+    orange_count = len(coreobjects.filter(status='Orange'))
+    red_count = len(coreobjects.filter(status='Red'))
     chart_data += ['Red', red_count], ['Orange', orange_count], ['Green', green_count]
     return chart_data
 
@@ -49,11 +53,11 @@ def coreobject_list(request):
     coreobjects = CoreObject.objects.all()
     page_obj = coreobject_paginator(request, coreobjects)
     chart_data = get_data_for_chart(coreobjects)
-    unique_obj_types = get_unique_datasets()
+    unique_dataset_names = get_unique_datasets()
     return render(request, 'coreobject_list.html', {
         'page_obj': page_obj,
         'chart_data': chart_data,
-        'unique_obj_types': unique_obj_types,
+        'unique_dataset_names': unique_dataset_names,
     })
 
 
