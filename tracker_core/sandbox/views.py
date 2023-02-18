@@ -13,21 +13,55 @@ from dashboard.models import CoreObject, Dataset
 
 def sandbox_index(request):
     """
-    base view returning all datasets and all objects
+    Base view returning all datasets and all objects,
+    paginated, updated status
     """
-    dataset_list = Dataset.objects.all()
-    paginated_dataset_list = sandbox_paginator(request, dataset_list)
-    object_list = CoreObject.objects.all()
-    paginated_object_list = sandbox_paginator(request, object_list)
+    paginated_dataset_list = get_dataset_list(request)
+    paginated_object_list = get_object_list(request)
     return render(request, 'sandbox.html', {
         'paginated_dataset_list': paginated_dataset_list,
         'paginated_object_list': paginated_object_list,
     },)
 
 
-def sandbox_paginator(request, objects):
-    paginator = Paginator(objects, 10)  # Show 10 coreobjects per page.
-    page_number = request.GET.get('page')
+def get_dataset_list(request):
+    dataset_list = Dataset.objects.all().order_by('dataset')
+    paginated_dataset_list = sandbox_paginator(request, dataset_list, getparameter='dataset_page')
+    return paginated_dataset_list
+
+
+def get_object_list(request):
+    object_list = CoreObject.objects.all().order_by('dataset', 'priority', 'current_value')
+    object_list = coreobject_status_update(object_list)
+    paginated_object_list = sandbox_paginator(request, object_list, getparameter='object_page')
+    return paginated_object_list
+
+
+def coreobject_status_update(object_list):
+    """
+    Object's status automatically updated based on combination of its current value and priority as per status_matrix.
+    """
+    status_matrix = {
+        'Green': [('Green', 'Low'), ('Orange', 'Low'), ('Green', 'Moderate'), ('Green', 'High')],
+        'Orange': [('Red', 'Low'), ('Orange', 'Moderate')],
+        'Red': [('Red', 'Moderate'), ('Orange', 'High'), ('Red', 'High')],
+    }
+    for coreobject in object_list:
+        if (coreobject.current_value, coreobject.priority) in status_matrix.get('Green') and coreobject.status != 'Green':
+            coreobject.status = 'Green'
+            coreobject.save()
+        elif (coreobject.current_value, coreobject.priority) in status_matrix.get('Orange') and coreobject.status != 'Orange':
+            coreobject.status = 'Orange'
+            coreobject.save()
+        elif (coreobject.current_value, coreobject.priority) in status_matrix.get('Red') and coreobject.status != 'Red':
+            coreobject.status = 'Red'
+            coreobject.save()
+    return object_list
+
+
+def sandbox_paginator(request, objects, getparameter):
+    paginator = Paginator(objects, 9)  # Show 5 datasets/objects per page.
+    page_number = request.GET.get(getparameter)
     page_obj = paginator.get_page(page_number)
     return page_obj
 
@@ -37,8 +71,7 @@ def dataset_show_all_objects(request):
     This function returns list of all objects as response to button "Show all objects".
     """
     data = dict()
-    object_list = CoreObject.objects.all()
-    paginated_object_list = sandbox_paginator(request, object_list)
+    paginated_object_list = get_object_list(request)
     data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
         'paginated_object_list': paginated_object_list,
     })
@@ -51,7 +84,7 @@ def dataset_filter_object_table(request, pk):
     """
     data = dict()
     object_list = CoreObject.objects.filter(dataset_id=pk)
-    paginated_object_list = sandbox_paginator(request, object_list)
+    paginated_object_list = sandbox_paginator(request, object_list, getparameter='object_page')
     data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
         'paginated_object_list': paginated_object_list,
     })
@@ -74,8 +107,7 @@ def save_dataset_form(request, form, template_name):
             # process the data as required
             form.save()
             data['form_is_valid'] = True
-            dataset_list = Dataset.objects.all()
-            paginated_dataset_list = sandbox_paginator(request, dataset_list)
+            paginated_dataset_list = get_dataset_list(request)
             data['html_dataset_list'] = render_to_string('includes/partial_dataset_list.html', {
                 'paginated_dataset_list': paginated_dataset_list,
             })
@@ -121,8 +153,7 @@ def dataset_delete(request, pk):
     if request.method == 'POST':
         dataset.delete()
         data['form_is_valid'] = True
-        dataset_list = Dataset.objects.all()
-        paginated_dataset_list = sandbox_paginator(request, dataset_list)
+        paginated_dataset_list = get_dataset_list(request)
         data['html_dataset_list'] = render_to_string('includes/partial_dataset_list.html', {
             'paginated_dataset_list': paginated_dataset_list
         })
@@ -139,8 +170,7 @@ def reload_dataset_object_table(request):
     todo: bug_0003 to update view for cases when only one dataset is selected, so we would need to return only this dataset's objects
     """
     data = dict()
-    object_list = CoreObject.objects.all()
-    paginated_object_list = sandbox_paginator(request, object_list)
+    paginated_object_list = get_object_list(request)
     data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
         'paginated_object_list': paginated_object_list,
     })
@@ -160,8 +190,7 @@ def save_dataset_object_form(request, form, template_name):
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
-            object_list = CoreObject.objects.all()
-            paginated_object_list = sandbox_paginator(request, object_list)
+            paginated_object_list = get_object_list(request)
             data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
                 'paginated_object_list': paginated_object_list,
             })
@@ -207,8 +236,7 @@ def dataset_object_delete(request, pk):
     if request.method == 'POST':
         coreobject.delete()
         data['form_is_valid'] = True
-        object_list = CoreObject.objects.all()
-        paginated_object_list = sandbox_paginator(request, object_list)
+        paginated_object_list = get_object_list(request)
         data['html_dataset_object_list'] = render_to_string('includes/partial_dataset_object_list.html', {
             'paginated_object_list': paginated_object_list
         })

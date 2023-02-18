@@ -2,16 +2,12 @@
   {% csrf_token %}
   <div class="modal-header">
     <h4 class="modal-title">Confirm dataset deletion</h4>
-    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
   <div class="modal-body">
     <p class="lead">Are you sure you want to delete the object <strong>{{ dataset.dataset }}</strong>?
         All related objects will be deleted as well!</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
     <button type="submit" class="btn btn-danger">Delete dataset</button>
   </div>
 </form>

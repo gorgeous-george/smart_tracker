@@ -54,29 +54,20 @@
           {% include 'includes/partial_chart.html' %}
         </table>
 
-        <br>
-
     <!-- Data table -->
-    <table class="table w-75 table-hover" id="coreobject-table">
+    <table class="table w-75 table-hover table-sm" id="coreobject-table">
     <thead>
-    <tr class="table-active align-top">
-      <th scope="col" class="col-1">Status</th>
-      <th scope="col" class="col-1">Name</th>
-      <th scope="col" class="col-1">Dataset</th>
-      <th scope="col" class="col-2">Description</th>
-      <th scope="col" class="col-1">Responsible</th>
-      <th scope="col" class="col-1">Time frame</th>
-    </tr>
-    </thead>
-    <tbody>
-      {% include 'includes/partial_coreobject_list.html' %}
-    </tbody>
-    </table>
-
-    <!-- Paginator -->
-    {% if page_obj %}
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
+    <tr>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-2"></th>
+      <th scope="col" class="col-4"></th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-1">
+        <!-- Paginator -->
+        {% if page_obj %}
+        <nav aria-label="Object paginator">
+        <ul class="pagination">
           {% if page_obj.has_previous %}
           <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a></li>
           <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
@@ -90,9 +81,24 @@
           {% else %}
           <li class="page-item disabled"> <a class="page-link">Next</a> </li>
           {% endif %}
-      </ul>
-    </nav>
-    {% endif %}
+        </ul>
+        </nav>
+        {% endif %}
+      </th>
+    </tr>
+    <tr class="table-active align-top">
+      <th scope="col" class="col-1">Status</th>
+      <th scope="col" class="col-1">Name</th>
+      <th scope="col" class="col-2">Dataset</th>
+      <th scope="col" class="col-4">Description</th>
+      <th scope="col" class="col-1">Priority</th>
+      <th scope="col" class="col-1">Time frame</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_coreobject_list.html' %}
+    </tbody>
+    </table>
 
     {% else %}
         <h2> HELLO {{ user }} </h2>

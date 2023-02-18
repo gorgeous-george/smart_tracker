@@ -7,14 +7,14 @@
     <br>
     {% if user.is_authenticated %}
 
-    <div class="card w-50">
+    <div class="card" style="width: fit-content">
       <img src="{% static 'order.jpg' %}" class="card-img-top" alt="order">
       <div class="card-body">
         <h5 class="card-title">
         Welcome to
         <abbr title="The SMART stands for Specific, Measurable, Achievable, Relevant, and Time-Bound.
 Defining these parameters as they pertain to your goal helps ensure that your objectives
-are attainable within a certain time frame.">SMART</abbr> tracker.
+are attainable within a certain time frame." class="initialism  fw-semibold">SMART</abbr> tracker.
         <br>You can use it to track any goal, task, or asset you want.</h5>
       </div>
       <ul class="list-group list-group-flush">

@@ -1,7 +1,7 @@
 {% for dataset in paginated_dataset_list %}
 <tr>
     <td><button type="button"
-                class="btn-sm btn-light js-show-objects"
+                class="btn btn-sm js-show-objects"
                 data-url="{% url 'dataset-object-filter' dataset.pk %}">
         see objects
     </button></td>
@@ -25,7 +25,12 @@
 {% empty %}
 <tr>
     <td colspan="8" class="text-center bg-warning">
-        There are no datasets.
+        There are no datasets.<br>
+        <button type="button"
+                class="btn btn-sm btn-success js-create-dataset"
+                data-url="{% url 'dataset-add' %}">
+            Starter Pack
+        </button>
     </td>
 </tr>
 {% endfor %}
