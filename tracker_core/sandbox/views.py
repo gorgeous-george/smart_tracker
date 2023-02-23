@@ -60,7 +60,7 @@ def coreobject_status_update(object_list):
 
 
 def sandbox_paginator(request, objects, getparameter):
-    paginator = Paginator(objects, 9)  # Show 5 datasets/objects per page.
+    paginator = Paginator(objects, 5)  # Show 5 datasets/objects per page.
     page_number = request.GET.get(getparameter)
     page_obj = paginator.get_page(page_number)
     return page_obj
@@ -180,7 +180,7 @@ def reload_dataset_object_table(request):
 # functions below are created to handle DATASET OBJECTS' buttons "New object", "Edit", "Delete"
 def save_dataset_object_form(request, form, template_name):
     """
-    Since this function is used in more than one place, it was defined as a separate function.
+    This function prepares JSON data for the ajax request.
     Its purpose is to validate the obtained form, save the valid form, take an updated list of all coreobjects,
     and return JsonResponse with the form, the updated coreobject list, and the html data that will be used by ajax
     (see 'sandbox/static/assets/js/dataset_objects.js' for details)

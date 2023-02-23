@@ -1,13 +1,33 @@
 from django.core.paginator import Paginator
-from django.shortcuts import get_list_or_404, render
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from dashboard.models import CoreObject, Dataset
-
+from dashboard.forms import DashboardFilterForm
 
 # todo: add a Class with @login_required and @permission_required decorators for all view functions in this module
 # todo: show user only his/her dataset/objects : Coreobject.responsible = Dataset.owner = self.request.user
+
+
+def test(request):
+    from dashboard.forms import TestForm
+    # todo: to delete this view, it's only for development purposes
+    """
+    FOR TESTING PURPOSES ONLY
+    """
+    if request.method == 'GET':
+        # create a form instance and populate it with data from the request:
+        form = TestForm(request.GET)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            datasets = form.cleaned_data['datasets']
+            status = form.cleaned_data['status']
+            print("Datasets selected: ", datasets)
+            print("Status selected: ", status)
+
+    return render(request, 'test.html', {'form': form})
 
 
 def index(request):
@@ -17,29 +37,31 @@ def index(request):
     return render(request, 'index.html')
 
 
-def coreobject_list(request):
+def dashboard_index(request):
     """
-    To return a paginated and filtered queryset of all coreobjects.
+    Core view to render the dashboard.html template with required data
     """
     coreobjects = CoreObject.objects.all()
-    page_obj = coreobject_paginator(request, coreobjects)
-    chart_data = get_data_for_chart(coreobjects)
-    unique_dataset_names = Dataset.objects.all()
-    return render(request, 'coreobject_list.html', {
-        'page_obj': page_obj,
+    paginated_obj_list, chart_data = get_dashboard_data(request, coreobjects)
+    form = DashboardFilterForm()
+    return render(request, 'dashboard.html', {
+        'paginated_obj_list': paginated_obj_list,
         'chart_data': chart_data,
-        'unique_dataset_names': unique_dataset_names,
+        'form': form,
     })
 
 
+def get_dashboard_data(request, coreobjects):
+    """
+    Generates data that is required for dashboard.html template: object list, chart values, dataset names
+    """
+    paginated_obj_list = coreobject_paginator(request, coreobjects)
+    chart_data = get_data_for_chart(coreobjects)
+    return paginated_obj_list, chart_data
+
+
 def coreobject_paginator(request, coreobjects):
-    """
-    Since paginator is used in more than one place, it was defined as a separate function.
-    It is called by:
-    - coreobject_list()
-    - save_coreobject_form()
-    """
-    paginator = Paginator(coreobjects, 10)  # Show 10 coreobjects per page.
+    paginator = Paginator(coreobjects, 5)  # Show 5 coreobjects per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return page_obj
@@ -54,19 +76,69 @@ def get_data_for_chart(coreobjects):
     return chart_data
 
 
-def coreobject_filter(request, value):
+def filter_form(request):
     """
-    View to handle a received obj_type submitted by "Filter" button.
-    It returns JsonResponse with filtered queryset for ajax script that reloads the coreobject list table.
+    Dashboard Filter, button "Apply Filters"
+    This view's purpose is to validate the obtained form, perform queries to obtain filtered data,
+    and return JsonResponse with filtered data for the object table and chart.
+    It also returns the form instance to fill the form with previously selected filter values.
     """
-    queryset = get_list_or_404(CoreObject, dataset=value)
     data = dict()
-    page_obj = queryset
-    data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
-        'page_obj': page_obj
-    })
+    if request.method == 'POST':
+        form = DashboardFilterForm(request.POST)
+        if form.is_valid():
+
+            data['form_is_valid'] = True
+
+            dataset_filter_values = form.cleaned_data.get('datasets')
+            status_filter_values = form.cleaned_data.get('status')
+            priority_filter_values = form.cleaned_data.get('priority')
+            timeframe_filter_values = form.cleaned_data.get('timeframe')
+
+            coreobjects = get_filtered_coreobjects(
+                dataset_filter_values, status_filter_values, priority_filter_values, timeframe_filter_values)
+
+            paginated_obj_list, chart_data = get_dashboard_data(request, coreobjects)
+
+            data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
+                'paginated_object_list': paginated_obj_list
+            })
+            data['html_chart_data'] = render_to_string('dashboard.html', {
+                'chart_data': chart_data
+            })
+            data['html_filter_form_data'] = render_to_string('includes/partial_filter_form.html', {
+                'form': form
+            })
+
+        else:
+            form = DashboardFilterForm()
+            data['form_is_valid'] = False
+
     return JsonResponse(data)
 
 
+def get_filtered_coreobjects(
+        dataset_filter_values, status_filter_values, priority_filter_values, timeframe_filter_values):
 
+    coreobjects = CoreObject.objects.all()
 
+    if '*' in dataset_filter_values:
+        dataset_filter_values = coreobjects.values_list('dataset', flat=True)
+
+    if '*' in status_filter_values:
+        status_filter_values = ['Red', 'Orange', 'Green']
+
+    if '*' in priority_filter_values:
+        priority_filter_values = ['High', 'Moderate', 'Low']
+
+    if '*' in timeframe_filter_values:
+        timeframe_filter_values = ['Day', 'Week', 'Month', 'Year']
+
+    filtered_coreobjects = coreobjects.filter(
+        dataset__in=dataset_filter_values,
+        status__in=status_filter_values,
+        priority__in=priority_filter_values,
+        timeframe__in=timeframe_filter_values,
+        )
+
+    return filtered_coreobjects

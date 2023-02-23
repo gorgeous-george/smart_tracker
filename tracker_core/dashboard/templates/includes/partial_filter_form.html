@@ -1,0 +1,41 @@
+<form class="row g-3"
+      method="post"
+      action="{% url 'dashboard-filter' %}"
+      id="form-filter">
+
+    {% csrf_token %}
+
+  <div class="col-6">
+    <label class="form-label">Dataset</label>
+      {{ form.datasets }}
+  </div>
+
+  <div class="col-2">
+    <label class="form-label">Status</label>
+      {{ form.status }}
+  </div>
+
+  <div class="col-2">
+    <label class="form-label">Priority</label>
+      {{ form.priority }}
+  </div>
+
+  <div class="col-2">
+    <label class="form-label">Time Frame</label>
+      {{ form.timeframe }}
+  </div>
+
+  <div class="col-12">
+    <button type="submit"
+            class="btn btn-sm js-filter-form-submit">
+        Apply Filters
+    </button>
+    <button type="reset"
+            class="btn btn-sm js-filter-form-reset"
+            onClick="document.location.reload(true)">
+        Clear Filters
+    </button>
+  </div>
+
+</form>
+

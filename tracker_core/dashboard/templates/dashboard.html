@@ -3,16 +3,12 @@
 {% load static %}
 
 {% block extra_css %}
-
-
 {% endblock extra_css %}
 
 {% block extra_js %}
 
-    <!-- JS scripts for interactive ajax requests -->
+    <!-- JS scripts for Google Pie chart -->
     <script src="{% static 'assets/js/piechart.js' %}"></script>
-
-    <!-- JS script for Google Pie Chart -->
     <script type="text/javascript" src="{% static 'assets/js/loader.js' %}"></script>
     <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
@@ -21,11 +17,11 @@
         var data = google.visualization.arrayToDataTable({{ chart_data|safe }});
 
         var options = {
-          title: 'title text',
+          title: '',
           is3D: false,
           pieHole: 0.5,
           chartArea:{left:20,top:20,width:'100%',height:'100%'},
-          colors:['#b53a1b','#ffaa00','#03701f']
+          colors:['#dc4c64','#e4a11b','#14a44d']
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
@@ -33,9 +29,12 @@
       }
     </script>
 
+    <!-- Custom scripts for "Apply Filters" button -->
+    <script type="text/javascript" src="{% static 'assets/js/form-filter.js' %}"></script>
+
 {% endblock extra_js%}
 
-{% block placeholder %}Dashboard{% endblock placeholder %}
+{% block placeholder %}Data table and chart{% endblock placeholder %}
 
 {% block content %}
 
@@ -43,41 +42,49 @@
     <br>
 
     <!-- Chart table -->
-     <table class="table table-bordered w-75" id="dashboard-table">
-
-          <thead>
-            <tr>
-              <th scope="col">Dashboard</th>
-              <th scope="col">Filters</th>
-            </tr>
-          </thead>
-          {% include 'includes/partial_chart.html' %}
+     <table class="table w-75 table-borderless" id="dashboard-table">
+         <tbody>
+           <tr>
+             <td>
+               {% include 'includes/partial_chart.html' %}
+             </td>
+             <td>
+               {% include 'includes/partial_filter_form.html' %}
+             </td>
+           </tr>
+         </tbody>
         </table>
 
+
     <!-- Data table -->
-    <table class="table w-75 table-hover table-sm" id="coreobject-table">
+    <table class="table w-75 table-hover table-sm"
+           id="coreobject-table"
+           data-filter-control="true"
+           data-show-search-clear-button="true">
     <thead>
     <tr>
-      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-1">
+          <button class="btn btn-sm" onclick="window.location.href={% url 'sandbox' %};">Sandbox</button><p></p>
+      </th>
       <th scope="col" class="col-1"></th>
       <th scope="col" class="col-2"></th>
       <th scope="col" class="col-4"></th>
       <th scope="col" class="col-1"></th>
       <th scope="col" class="col-1">
         <!-- Paginator -->
-        {% if page_obj %}
+        {% if paginated_obj_list %}
         <nav aria-label="Object paginator">
         <ul class="pagination">
-          {% if page_obj.has_previous %}
-          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+          {% if paginated_obj_list.has_previous %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.previous_page_number }}">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.previous_page_number }}">{{ paginated_obj_list.previous_page_number }}</a></li>
           {% else %}
           <li class="page-item disabled"> <a class="page-link">Previous</a> </li>
           {% endif %}
-          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.page_number }}">{{ page_obj.number }}</a></li>
-          {% if page_obj.has_next %}
-          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.page_number }}">{{ paginated_obj_list.number }}</a></li>
+          {% if paginated_obj_list.has_next %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.next_page_number }}">{{ paginated_obj_list.next_page_number }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.next_page_number }}">Next</a></li>
           {% else %}
           <li class="page-item disabled"> <a class="page-link">Next</a> </li>
           {% endif %}
@@ -86,7 +93,7 @@
         {% endif %}
       </th>
     </tr>
-    <tr class="table-active align-top">
+    <tr class="table-active">
       <th scope="col" class="col-1">Status</th>
       <th scope="col" class="col-1">Name</th>
       <th scope="col" class="col-2">Dataset</th>
@@ -105,5 +112,6 @@
         Please <a href="{% url 'login' %}">login</a>
         or <a href="{% url 'register' %}">register.</a>
     {% endif %}
+
 
 {% endblock content %}

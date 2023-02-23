@@ -1,5 +1,5 @@
-{% for coreobject in page_obj %}
-    <tr class="table-success">
+{% for coreobject in paginated_obj_list %}
+    <tr>
         {% if coreobject.status == 'Green' %}
             <td class="bg-success"> </td>
         {% elif coreobject.status == 'Orange' %}
@@ -10,7 +10,7 @@
             <td>{{ coreobject.status }}</td>
         {% endif %}
         <td>{{ coreobject.name }}</td>
-        <td>{{ coreobject.dataset__dataset }}</td>
+        <td>{{ coreobject.dataset }}</td>
         <td>{{ coreobject.description }}</td>
         <td>{{ coreobject.priority }}</td>
         <td>{{ coreobject.timeframe }}</td>

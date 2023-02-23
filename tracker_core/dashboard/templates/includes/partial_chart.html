@@ -1,21 +1,3 @@
-<tbody>
-    <tr class="primary">
-        <td>
-            <!-- Pie Chart -->
-            <div id="piechart_3d" style="width:400px; height:200px;"></div>
-        </td>
-        <td>
-            <select class="select" multiple data-mdb-clear-button="true">
-            {% for dataset in unique_dataset_names %}
-                <option value="{{ dataset }}" id="filter_by_dataset">{{ dataset }}</option>
-            {% endfor %}
-            </select>
-            <label class="form-label select-label">By dataset</label>
-        </td>
-        <td>
-            By status
-            {% for status in unique_statuses %}
-            {% endfor %}
-        </td>
-    </tr>
-</tbody>
+
+    <!-- Pie Chart -->
+    <div id="piechart_3d" style="width:400px; height:200px;"></div>
