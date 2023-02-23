@@ -1,7 +1,7 @@
-<form class="row g-3"
-      method="post"
-      action="{% url 'dashboard-filter' %}"
-      id="form-filter">
+<form method="post"
+      action="#"
+      id="form-filter"
+      class="row g-3">
 
     {% csrf_token %}
 
@@ -31,7 +31,7 @@
         Apply Filters
     </button>
     <button type="reset"
-            class="btn btn-sm js-filter-form-reset"
+            class="btn btn-sm"
             onClick="document.location.reload(true)">
         Clear Filters
     </button>

@@ -101,17 +101,12 @@ def filter_form(request):
             paginated_obj_list, chart_data = get_dashboard_data(request, coreobjects)
 
             data['html_coreobject_list'] = render_to_string('includes/partial_coreobject_list.html', {
-                'paginated_object_list': paginated_obj_list
-            })
-            data['html_chart_data'] = render_to_string('dashboard.html', {
-                'chart_data': chart_data
-            })
-            data['html_filter_form_data'] = render_to_string('includes/partial_filter_form.html', {
-                'form': form
+                'paginated_obj_list': paginated_obj_list
             })
 
+            data['html_chart_data'] = chart_data
+
         else:
-            form = DashboardFilterForm()
             data['form_is_valid'] = False
 
     return JsonResponse(data)
