@@ -32,8 +32,10 @@ any thing.
 - Each object would have one of three statuses based on simple pattern "Red-Orange-Green". This can be interpreted as 
 "Absent-Running low-Available" or "Not done-In process-Performed" and so on. Each object has its own level of priority 
 and current value set by user, so that application defines status of the object comparing current value with the priority.
-- DASHBOARD is used to see the current status of the objects, data table, chart. It also provides interactive filters 
-by dataset, status, priority and timeframe.
+- <img src="tracker_core/static/sandbox.png">
+- DASHBOARD is used to see the current status of the objects via data table and chart. It also provides interactive 
+filters by dataset, status, priority and timeframe.
+- <img src="tracker_core/static/dashboard.png">
 
 ## Architecture
 
