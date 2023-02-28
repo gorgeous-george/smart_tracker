@@ -1,0 +1,13 @@
+<form method="post" action="{% url 'dataset-delete' dataset.pk %}" class="js-dataset-delete-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm dataset deletion</h4>
+  </div>
+  <div class="modal-body">
+    <p class="lead">Are you sure you want to delete the object <strong>{{ dataset.dataset }}</strong>?
+        All related objects will be deleted as well!</p>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-danger">Delete dataset</button>
+  </div>
+</form>

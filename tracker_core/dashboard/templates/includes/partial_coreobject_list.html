@@ -1,0 +1,26 @@
+{% for coreobject in paginated_obj_list %}
+    <tr>
+        {% if coreobject.status == 'Green' %}
+            <td class="bg-success"> </td>
+        {% elif coreobject.status == 'Orange' %}
+            <td class="bg-warning"> </td>
+        {% elif coreobject.status == 'Red' %}
+            <td class="bg-danger"> </td>
+        {% else %}
+            <td>{{ coreobject.status }}</td>
+        {% endif %}
+        <td>{{ coreobject.name }}</td>
+        <td>{{ coreobject.dataset }}</td>
+        <td>{{ coreobject.description }}</td>
+        <td>{{ coreobject.priority }}</td>
+        <td>{{ coreobject.timeframe }}</td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="8" class="text-center bg-warning">
+            There are no objects.
+            Use the <a href="{% url 'sandbox' %}">sandbox</a> to add/edit tracked objects.
+        </td>
+    </tr>
+{% endfor %}
+

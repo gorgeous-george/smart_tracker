@@ -1,0 +1,184 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+     {% block title %}SMART Tracker{% endblock title %}
+    </title>
+
+    <!-- Required JQuery and MDBootstrap scripts-->
+    <script src="{% static 'assets/js/jquery-3.6.3.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/mdb.min.css' %}"/>
+
+    <!-- Custom static files and styles-->
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/base_generic.css' %}">
+
+    {% block extra_css %}
+    {% endblock extra_css%}
+
+    {% block extra_js %}
+    {% endblock extra_js%}
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{% url 'index' %}">Smart tracker</a>
+
+      <!-- Toggle button -->
+      <button class="navbar-toggler position-absolute d-md-none collapsed"
+              type="button"
+              data-mdb-toggle="collapse"
+              data-mdb-target="#sidebarMenu"
+              aria-controls="sidebarMenu"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <img src="{% static 'toggler_icon.svg' %}">
+      </button>
+
+      <div class="w-100">
+          <input class="form-control form-control-dark w-100 rounded-0 border-0"
+                 type="text"
+                 placeholder="{% block placeholder %}{% endblock placeholder %}"
+                 aria-label="Search">
+      </div>
+      {% if user.is_authenticated %}
+            <div class="navbar-nav">
+                <div class="nav-item text-nowrap float-end">
+                    <a class="nav-link px-3" href="{% url 'profile' %}">
+                        Logged as: {{ user.get_username }}
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-nav">
+                <div class="nav-item text-nowrap">
+                    <a class="nav-link px-3" href="{% url 'logout' %}?next={{ request.path }}">
+                        <span data-feather="log-out" class="align-text-bottom"></span>
+                        Logout
+                    </a>
+                </div>
+            </div>
+      {% else %}
+            <div class="navbar-nav">
+                <div class="nav-item text-nowrap">
+                    <a class="nav-link px-3" href="{% url 'login' %}?next={{ request.path }}">
+                        Login
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-nav">
+                <div class="nav-item text-nowrap">
+                    <a class="nav-link px-3" href="{% url 'register' %}?next={{ request.path }}">
+                        Register
+                    </a>
+                </div>
+            </div>
+      {% endif %}
+    </header>
+
+    <!-- Sidebar -->
+    {% block sidebar %}
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3 sidebar-sticky">
+      {% if user.is_authenticated %}
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'index' %}">
+              <span data-feather="home" class="align-text-bottom"></span>
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'dashboard-index' %}">
+              <span data-feather="pie-chart" class="align-text-bottom"></span>
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'sandbox' %}">
+              <span data-feather="codesandbox" class="align-text-bottom"></span>
+              Sandbox
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'tutorial' %}">
+              <span data-feather="help-circle" class="align-text-bottom"></span>
+              Tutorial
+            </a>
+          </li>
+        </ul>
+      {% endif %}
+      {% if user.is_staff %}
+        <ul class="nav flex-column mb-2">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+            <span>Staff tools</span>
+            </h6>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'admin:index' %}">
+                      <span data-feather="tool" class="align-text-bottom"></span>
+                      Admin module
+                  </a>
+              </li>
+          </ul>
+      {% endif %}
+      </div>
+    </nav>
+    {% endblock sidebar %}
+
+    <!-- Page container open tag-->
+    <div class="container-fluid text-start">
+
+      <!-- Row 1 -->
+      <div class="row">
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+      <!-- django (flash) messages  -->
+      {% if messages %}
+      <div class="w-50" id="message_container">
+          <br>
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} text-center" role="alert">
+              <strong>{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% else %}
+                {{ message.tags|title }}{% endif %}!</strong> {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Empty block for content of templates extended from base_generic -->
+      {% block content %}
+      {% endblock content %}
+
+      </main>
+
+      <!-- Row 1 closed -->
+      </div>
+
+    <!-- Page container closed -->
+    </div>
+
+    <!-- Required JavaScript files -->
+    <script type="text/javascript" src="{% static 'assets/js/jquery-3.6.3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/mdb.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/feather.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/Chart.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/message_timeout.js' %}"></script>
+
+    <!-- Replace all elements that have a data-feather attribute with SVG markup
+    corresponding to the element's data-feather attribute value. -->
+    <script>feather.replace()</script>
+
+</body>
+</html>

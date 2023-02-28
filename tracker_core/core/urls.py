@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf import settings
 
-from core_app.views import index
+from dashboard.views import index
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
@@ -25,7 +25,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', index, name="index"),
     path('account/', include('auth_core.urls')),
-    path('app/', include('core_app.urls')),
+    path('dashboard/', include('dashboard.urls')),
+    path('sandbox/', include('sandbox.urls')),
+    path('tutorial/', include('tutorial.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,35 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+    <br>
+    <br>
+
+<form action="{% url 'test' %}" method="get">
+
+    <div class="col-12">
+    {{ form.datasets }}
+    </div>
+
+    <br>
+
+
+        {{ form.status }}
+
+    <br>
+
+  <div class="col-12">
+    <button type="submit"
+            class="btn btn-sm js-filter-form-submit">
+        Apply Filters
+    </button>
+    <button type="reset"
+            class="btn btn-sm js-filter-form-reset"
+            onClick="document.location.reload(true)">
+        Clear Filters
+    </button>
+  </div>
+
+</form>
+
+{% endblock content %}

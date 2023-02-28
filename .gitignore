@@ -21,7 +21,7 @@ tracker_core/core/settings_local_sqlite_non-docker.py
 tracker_core/db.sqlite3
 
 ##LOCAL DEV FILES
-tracker_core/core_app/templates/test.html
+
 
 # Backup files #
 *.bak

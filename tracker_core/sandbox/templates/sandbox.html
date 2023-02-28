@@ -1,7 +1,159 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+
+    <!-- JS scripts for interactive ajax requests -->
+    <script src="{% static 'assets/js/datasets.js' %}"></script>
+    <script src="{% static 'assets/js/dataset_objects.js' %}"></script>
+
+{% endblock extra_js %}
+
+{% block placeholder %}This is a sandbox to add/edit tracked objects.
+    Here you can start with prepared sets.
+    Feel free to create your own datasets.
+{% endblock placeholder %}
+
 {% block content %}
 
-    <h1> SANDBOX </h1>
+    {% if user.is_authenticated %}
+    <br>
+
+    <!-- Container for Dataset table -->
+    <div>
+
+    <table class="table table-hover table-sm w-75" id="dataset-table">
+    <thead>
+    <tr>
+      <th scope="col" class="col-2">
+        <button type="button"
+                class="btn btn-sm btn-success js-create-dataset"
+                data-url="{% url 'dataset-add' %}">
+          <span data-feather="plus-square" class="align-text-bottom"></span>
+          Add dataset
+        </button><p></p>
+      </th>
+      <th scope="col" class="col-2">
+        <button type="button"
+                class="btn btn-sm js-show-all-objects"
+                data-url="{% url 'dataset-object-all' %}">
+            Show all objects
+        </button><p></p>
+      </th>
+      <th scope="col" class="col-5"></th>
+      <th scope="col" class="col-2">
+        <!-- Paginator -->
+        {% if paginated_dataset_list %}
+        <nav aria-label="Dataset paginator">
+          <ul class="pagination">
+              {% if paginated_dataset_list.has_previous %}
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?dataset_page={{ paginated_dataset_list.previous_page_number }}">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?dataset_page={{ paginated_dataset_list.previous_page_number }}">{{ paginated_dataset_list.previous_page_number }}</a></li>
+              {% else %}
+              <li class="page-item disabled"> <a class="page-link">Previous</a> </li>
+              {% endif %}
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?dataset_page={{ paginated_dataset_list.page_number }}">{{ paginated_dataset_list.number }}</a></li>
+              {% if paginated_dataset_list.has_next %}
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?dataset_page={{ paginated_dataset_list.next_page_number }}">{{ paginated_dataset_list.next_page_number }}</a></li>
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?dataset_page={{ paginated_dataset_list.next_page_number }}">Next</a></li>
+              {% else %}
+              <li class="page-item disabled"> <a class="page-link">Next</a> </li>
+              {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+    </th>
+    </tr>
+    <tr class="table-active align-top">
+      <th scope="col" class="col-2">Filter objects</th>
+      <th scope="col" class="col-2">Dataset</th>
+      <th scope="col" class="col-5">Description</th>
+      <th scope="col" class="col-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_dataset_list.html' %}
+    </tbody>
+    </table>
+    </div>
+
+    <!-- Container for Objects Table -->
+    <div>
+
+    <table class="table table-hover table-sm w-75" id="dataset-object-table">
+    <thead>
+    <tr>
+      <th scope="col" class="col-1">
+        <button type="button"
+                class="btn btn-sm btn-success js-create-dataset-object"
+                data-url="{% url 'dataset-object-add' %}">
+          <span data-feather="plus-square" class="align-text-bottom"></span>
+          Add object
+        </button>
+      </th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-2"></th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-2"></th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-2">
+        <!-- Paginator -->
+        {% if paginated_object_list %}
+        <nav aria-label="Object paginator">
+          <ul class="pagination">
+              {% if paginated_object_list.has_previous %}
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?object_page={{ paginated_object_list.previous_page_number }}">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?object_page={{ paginated_object_list.previous_page_number }}">{{ paginated_object_list.previous_page_number }}</a></li>
+              {% else %}
+              <li class="page-item disabled"> <a class="page-link">Previous</a> </li>
+              {% endif %}
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?object_page={{ paginated_object_list.page_number }}">{{ paginated_object_list.number }}</a></li>
+              {% if paginated_object_list.has_next %}
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?object_page={{ paginated_object_list.next_page_number }}">{{ paginated_object_list.next_page_number }}</a></li>
+              <li class="page-item"><a class="page-link" href="{{ request.path }}?object_page={{ paginated_object_list.next_page_number }}">Next</a></li>
+              {% else %}
+              <li class="page-item disabled"> <a class="page-link">Next</a> </li>
+              {% endif %}
+          </ul>
+        </nav>
+        {% endif %}</th>
+    </tr>
+    <tr class="table-active align-top">
+      <th scope="col" class="col-1">Status</th>
+      <th scope="col" class="col-1">Object</th>
+      <th scope="col" class="col-2">Dataset</th>
+      <th scope="col" class="col-1">Current value</th>
+      <th scope="col" class="col-1">Priority</th>
+      <th scope="col" class="col-2">Description</th>
+      <th scope="col" class="col-1">Time frame</th>
+      <th scope="col" class="col-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_dataset_object_list.html' %}
+    </tbody>
+    </table>
+
+    </div>
+
+    <!-- Container for empty Modal prepared for creation/update forms -->
+    <div class="modal fade" id="modal-sandbox">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <!-- Greetings for non-logged user -->
+    {% else %}
+        <h2> HELLO {{ user }} </h2>
+        Please <a href="{% url 'login' %}">login</a>
+        or <a href="{% url 'register' %}">register.</a>
+    {% endif %}
 
 {% endblock %}

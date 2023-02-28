@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'dataset-add' %}" class="js-dataset-create-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Create a new dataset</h4>
+  </div>
+  <div class="modal-body">
+    {% include 'includes/partial_dataset_form.html' %}
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Create dataset</button>
+  </div>
+</form>

@@ -175,12 +175,18 @@ $ \l    # list databases
 $ \du   # list roles
 $ \?    # help
 ```
-
+-in case of need, for development purposes, run manage.py with custom settings:
+```
+./manage.py COMMAND --settings=core.settings_local_sqlite_non-docker
+```
 ***
 #### 2.6 Installing and configuring django extensions and other tools:
-- django-debug-toolbar
 - flake8
 - widget-tweaks
+### only for dev:
+- django-debug-toolbar
+- django-extensions
+- ipython
 
 ***
 #### 2.7 Configuring the microservices as docker containers
@@ -204,26 +210,26 @@ The files of settings and db are added to ".gitignore". To run ./manage.py comma
 ./manage.py startapp app_name
 ```
 - 'auth_core' - custom authentication module
-- 'core_app' - raw app skeleton (core object's generic views)
-- 'dashboard' - dashboard module (analytics, visualisation, presentation)
+- 'dashboard' - core object's generic views, visualisation chart
 - 'sandbox' - sandbox module (creation of custom objects' sets, namely groups of objects to track)
-- TO THINK ABOUT SEPARATE APP FOR BUSINESS LOGIC TBD
+- 'tutorial' - quick instructions including SMART concept, dashboard and sandbox features
  
 ##### 3.2 Creating models
-- 'core_app':
-  - created model representing a Core Object for 'core_app' application
-  - registering the CoreObject model in "admin.py"
+- 'dashboard':
+  - created model representing a Dataset 
+  - created model representing a Core Object
+  - registering the models in "admin.py"
 
 ##### 3.3 Creating views
 - 'auth_core': 
   - custom django generic class-based views (register, profile view, profile update)
-- 'core_app':
+- 'dashboard':
   - custom django generic class-based views (listview, detailview, CRUD pack) 
   
 ##### 3.4 Creating templates
 - 'auth_core': 
   - pack of auth templates (login, logout, password, profile, register - TO ADD BOOTSTRAP FORMS,TO CHECK PASSWORD - TBD)
-- 'core_app':
+- 'dashboard':
   - base_generic
   - index
   - core object listview, detailview, form, and CRUD pack 
@@ -235,7 +241,7 @@ The files of settings and db are added to ".gitignore". To run ./manage.py comma
 ##### 3.5 Creating forms
 - 'auth_core':
   - UserCreationForm (django's pre-defined model form)
-- 'core_app':
+- 'dashboard':
   - CoreObjectForm (custom model form)
 
 ##### 3.6 Configuring urls

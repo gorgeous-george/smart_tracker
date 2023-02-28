@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'dataset-object-update' form.instance.pk %}" class="js-dataset-object-update-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Update object</h4>
+  </div>
+  <div class="modal-body">
+    {% include 'includes/partial_dataset_object_form.html' %}
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Update object</button>
+  </div>
+</form>

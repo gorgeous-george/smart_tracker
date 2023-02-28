@@ -1,7 +1,114 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+
+    <!-- JS scripts for Google Pie chart -->
+    <script src="{% static 'assets/js/piechart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/loader.js' %}"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{ chart_data|safe }});
+
+        var options = {
+          title: '',
+          is3D: false,
+          pieHole: 0.5,
+          chartArea:{left:20,top:20,width:'100%',height:'100%'},
+          colors:['#dc4c64','#e4a11b','#14a44d']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <!-- Custom scripts for "Apply Filters" button -->
+    <script type="text/javascript" src="{% static 'assets/js/form-filter.js' %}"></script>
+
+{% endblock extra_js%}
+
+{% block placeholder %}Data table and chart{% endblock placeholder %}
+
 {% block content %}
 
-    <h1> DASHBOARD </h1>
+    {% if user.is_authenticated %}
+    <br>
 
-{% endblock %}
+    <!-- Chart table -->
+     <table class="table w-75 table-borderless" id="dashboard-table">
+         <tbody>
+           <tr>
+             <td>
+               {% include 'includes/partial_chart.html' %}
+             </td>
+             <td>
+               {% include 'includes/partial_filter_form.html' %}
+             </td>
+           </tr>
+         </tbody>
+        </table>
+
+
+    <!-- Data table -->
+    <table class="table w-75 table-hover table-sm" id="coreobject-table">
+    <thead>
+    <tr>
+      <th scope="col" class="col-1">
+          <button class="btn btn-sm" onclick="window.location.href={% url 'sandbox' %};">Sandbox</button><p></p>
+      </th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-2"></th>
+      <th scope="col" class="col-4"></th>
+      <th scope="col" class="col-1"></th>
+      <th scope="col" class="col-1">
+        <!-- Paginator -->
+        {% if paginated_obj_list %}
+        <nav aria-label="Object paginator">
+        <ul class="pagination">
+          {% if paginated_obj_list.has_previous %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.previous_page_number }}">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.previous_page_number }}">{{ paginated_obj_list.previous_page_number }}</a></li>
+          {% else %}
+          <li class="page-item disabled"> <a class="page-link">Previous</a> </li>
+          {% endif %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.page_number }}">{{ paginated_obj_list.number }}</a></li>
+          {% if paginated_obj_list.has_next %}
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.next_page_number }}">{{ paginated_obj_list.next_page_number }}</a></li>
+          <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ paginated_obj_list.next_page_number }}">Next</a></li>
+          {% else %}
+          <li class="page-item disabled"> <a class="page-link">Next</a> </li>
+          {% endif %}
+        </ul>
+        </nav>
+        {% endif %}
+      </th>
+    </tr>
+    <tr class="table-active">
+      <th scope="col" class="col-1">Status</th>
+      <th scope="col" class="col-1">Name</th>
+      <th scope="col" class="col-2">Dataset</th>
+      <th scope="col" class="col-4">Description</th>
+      <th scope="col" class="col-1">Priority</th>
+      <th scope="col" class="col-1">Time frame</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% include 'includes/partial_coreobject_list.html' %}
+    </tbody>
+    </table>
+
+    {% else %}
+        <h2> HELLO {{ user }} </h2>
+        Please <a href="{% url 'login' %}">login</a>
+        or <a href="{% url 'register' %}">register.</a>
+    {% endif %}
+
+
+{% endblock content %}

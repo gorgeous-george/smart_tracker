@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block placeholder %}Home{% endblock placeholder %}
+
+{% block content %}
+    <br>
+    {% if user.is_authenticated %}
+
+    <div class="card" style="width: fit-content">
+      <img src="{% static 'order.jpg' %}" class="card-img-top" alt="order">
+      <div class="card-body">
+        <h5 class="card-title">
+        Welcome to
+        <abbr title="The SMART stands for Specific, Measurable, Achievable, Relevant, and Time-Bound.
+Defining these parameters as they pertain to your goal helps ensure that your objectives
+are attainable within a certain time frame." class="initialism  fw-semibold">SMART</abbr> tracker.
+        <br>You can use it to track any goal, task, or asset you want.</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">First time at this website? Check the <a href="{%  url 'tutorial' %}">tutorial</a>.</li>
+        <li class="list-group-item">Otherwise, proceed to your <a href="{%  url 'dashboard-index' %}">dashboard</a> or
+        create new dataset in <a href="{%  url 'sandbox' %}">sandbox</a>.</li>
+      </ul>
+    </div>
+
+    {% else %}
+
+        <h2> HELLO {{ user }} </h2>
+        Please <a href="{% url 'login' %}">login</a>
+        or <a href="{% url 'register' %}">register.</a>
+
+    {% endif %}
+
+{% endblock %}

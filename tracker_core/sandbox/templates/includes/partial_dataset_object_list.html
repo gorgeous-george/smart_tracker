@@ -1,0 +1,41 @@
+{% for coreobject in paginated_object_list %}
+    <tr>
+        {% if coreobject.status == 'Green' %}
+            <td class="bg-success"> </td>
+        {% elif coreobject.status == 'Orange' %}
+            <td class="bg-warning"> </td>
+        {% elif coreobject.status == 'Red' %}
+            <td class="bg-danger"> </td>
+        {% endif %}
+        <td>{{ coreobject.name }}</td>
+        <td>{{ coreobject.dataset.dataset }}</td>
+        <td>{{ coreobject.current_value }}</td>
+        <td>{{ coreobject.priority }}</td>
+        <td>{{ coreobject.description }}</td>
+        <td>{{ coreobject.timeframe }}</td>
+        <td>
+            <button type="button"
+                    class="btn btn-warning btn-sm js-update-dataset-object"
+                    data-url="{% url 'dataset-object-update' coreobject.id %}">
+                    <span data-feather="edit" class="align-text-bottom"></span>
+                    Edit
+            </button>
+            <button type="button"
+                    class="btn btn-danger btn-sm js-delete-dataset-object"
+                    data-url="{% url 'dataset-object-delete' coreobject.id %}">
+                    <span data-feather="delete" class="align-text-bottom"></span>
+                    Delete
+            </button>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="12" class="text-center bg-warning">
+            There are no objects.<br><p></p>
+        </td>
+    </tr>
+{% endfor %}
+
+<!-- Replace all elements that have a data-feather attribute with SVG markup
+corresponding to the element's data-feather attribute value. -->
+<script>feather.replace()</script>

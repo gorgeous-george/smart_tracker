@@ -39,15 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'debug_toolbar',
     'widget_tweaks',
 
     'auth_core',
-    'core_app',
     'dashboard',
     'sandbox',
-
+    'tutorial',
 ]
+
+# only for development environment
+if DEBUG:
+    INSTALLED_APPS = [
+                         'django_extensions',
+                         'debug_toolbar',
+                     ] + INSTALLED_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -149,7 +154,8 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'core_app/static'),
+    os.path.join(BASE_DIR, 'dashboard/static'),
+    os.path.join(BASE_DIR, 'sandbox/static'),
     ]
 
 # Default primary key field type
