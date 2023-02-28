@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'debug_toolbar',
     'widget_tweaks',
 
     'auth_core',
@@ -47,6 +46,13 @@ INSTALLED_APPS = [
     'sandbox',
     'tutorial',
 ]
+
+# only for development environment
+if DEBUG:
+    INSTALLED_APPS = [
+                         'django_extensions',
+                         'debug_toolbar',
+                     ] + INSTALLED_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
