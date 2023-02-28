@@ -61,7 +61,7 @@ def get_dashboard_data(request, coreobjects):
 
 
 def coreobject_paginator(request, coreobjects):
-    paginator = Paginator(coreobjects, 5)  # Show 5 coreobjects per page.
+    paginator = Paginator(coreobjects, 10)  # Show 10 coreobjects per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return page_obj
