@@ -8,6 +8,7 @@ SMART Tracker engine provides user with the following features:
 Additional features:
 - Authentication/Authorization
 - User permissions (currently in development)
+- Interactive JQuery/Ajax forms
 - API returning datasets/objects (currently in development)
 - Admin tools (Flower, Pgadmin) (currently in development)
 
@@ -26,23 +27,35 @@ any thing.
 ## Common logic
 
 - User receives a short tutorial describing SMART concept and main application modules: SANDBOX and DASHBOARD.
+- SMART concept is hard-coded to COREOBJECT model, so that each object has approrpiate settings (current value, 
+priority, measure, time frame, responsible).
 - SANDBOX is used to create/edit/delete datasets and related objects. 
-- Each object can be related only to one dataset.
-- Each object has list of settings required by SMART concept (current value, priority, measure, time frame, responsible).
 - Each object would have one of three statuses based on simple pattern "Red-Orange-Green". This can be interpreted as 
 "Absent-Running low-Available" or "Not done-In process-Performed" and so on. Each object has its own level of priority 
-and current value set by user, so that application defines status of the object comparing current value with the priority.
-- <img src="tracker_core/static/sandbox.png">
-- DASHBOARD is used to see the current status of the objects via data table and chart. It also provides interactive 
-filters by dataset, status, priority and timeframe.
-- <img src="tracker_core/static/dashboard.png">
+and current value set by user, so that after object creation/update the application sets status of the object comparing 
+current value with the priority. It is hard-coded by functional view at SANDBOX. 
+- SANDBOX page has custom filters (SEE OBJECTS, SHOW ALL OBJECTS). It is designed as jQuery/Ajax + JS + custom 
+functional views.
+- SANDBOX page has buttons to Create, Edit and Delete datasets and objects. It is designed approapriately as modals +
+ModelForms + jQuery/Ajax + JS + custom functional views returning JSON + HTML includes
+<img src="tracker_core/static/sandbox.png">
+- DASHBOARD is used to see the current status of the objects via data table and chart.
+- DASHBOARD page has custom interactive filters by dataset, status, priority and timeframe. It is designed as custom 
+django form + jQuery/Ajax + JS + custom functional views returning JSON + HTML includes.
+- DASHBOARD has Pie Chart that is re-drawn appropriately to filter applied. It is designed as jQuery/Ajax + JS + custom 
+functional views returning JSON + HTML includes
+<img src="tracker_core/static/dashboard.png">
 
-## Architecture
+## Technology stack
 
+- Python
 - Docker-Compose
-- Django server
+- Django
 - Django REST
 - PostgreSQL
+- jQuery/Ajax
+- MDBootstrap
+- HTML/CSS/JS
 
 ## Quick start
 

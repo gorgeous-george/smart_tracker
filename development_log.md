@@ -1,19 +1,28 @@
 ***
 ### 1. Planning
+<details>
+
 - analysis of the project purpose and architecture
 - drafting apps (modules), data models, views, page templates
+- designing business logic
+
+</details>
 
 ***
 ### 2. Creation of project environment
+<details>
+
 - install Python
 - install Git
 - install PyCharm
 - create root project folder
 - create "README.md", "development_log.md"	
 - init empty local git repository
- 
+
 ***
 #### 2.1 Installing Django
+<details>
+
 - create separate folder "tracker_core" that will contain a core django app
 - go to created directory and activate virtual environment
 ```
@@ -29,8 +38,12 @@ $ django-admin startproject core .
 $ python manage.py runserver
 ```
 
+</details>
+
 ***
 #### 2.2 Installing Docker
+<details>
+
 - open terminal on Ubuntu
 - remove any Docker files that are running in the system
 - check if the system is up-to-date
@@ -58,8 +71,12 @@ That's it, Docker is successfully installed on Ubuntu!
 It is useful to follow the post-installation steps (sudo privs, etc)
 https://docs.docker.com/engine/install/linux-postinstall/
 
+</details>
+
 ***
-#### 2.3 Creation and configuring git repository
+#### 2.3 Configuring git repository
+<details>
+
 - create new repository at GitHub to have it as remote repository
 - create and configure SSH keys
 - configure branch protection rules for "main" branch at least
@@ -111,8 +128,12 @@ git branch --delete develop
 ```
 - Back to the first step
 
+</details>
+
 ***
 #### 2.4 Containerization - configuring docker and docker-compose
+<details>
+
 - create folder "docker" to have all settings there
 - create folder "core" for the Django application that will be run as microservice within Docker
 - create Dockerfile "core.Dockerfile"
@@ -147,8 +168,13 @@ try to check the docker service's status first and then restart the service if n
 sudo service docker status
 sudo service docker restart
 ```
+
+</details>
+
 ***
 #### 2.5 Configuring database layer (PostgreSQL for "core" service)
+<details>
+
 - install psycopg library within "core" virtual environment and update "requirements.txt" to have it in the image
 ```
 pip install psycopg2-binary
@@ -175,35 +201,49 @@ $ \l    # list databases
 $ \du   # list roles
 $ \?    # help
 ```
--in case of need, for development purposes, run manage.py with custom settings:
-```
-./manage.py COMMAND --settings=core.settings_local_sqlite_non-docker
-```
+
+</details>
+
 ***
 #### 2.6 Installing and configuring django extensions and other tools:
+<details>
+
 - flake8
 - widget-tweaks
-### only for dev:
+only for dev:
 - django-debug-toolbar
 - django-extensions
 - ipython
 
+</details>
+
 ***
 #### 2.7 Configuring the microservices as docker containers
+<details>
+
 - tracker_core
 - db_core
 
+</details>
+
+</details>
+
 ***
-### 3. Development
+### 3. Development of django application
+<details>
+
 *the app is designed to be run as docker container, however for development purposes additional settings are 
 created as well. It makes possible to run the server using local sqlite.db without docker. 
-The files of settings and db are added to ".gitignore". To run ./manage.py command with some specific 
-"settings_dev.py", the following language is used:*
+The files of settings and db are added to ".gitignore". In case of need, for development purposes run ./manage.py 
+command with custom settings:*
 ```
-./manage.py <command> --settings=core.settings_dev
+./manage.py runserver --settings=core.settings_local_sqlite_non-docker
+./manage.py makemigrations --settings=core.settings_local_sqlite_non-docker
+etc
 ```
-
 ##### 3.1 Creating apps
+<details>
+
 - move to folder containing django "manage.py" file
 - start a new app, add app_name to INSTALLED_APPS in "settings.py"
 ```
@@ -213,64 +253,122 @@ The files of settings and db are added to ".gitignore". To run ./manage.py comma
 - 'dashboard' - core object's generic views, visualisation chart
 - 'sandbox' - sandbox module (creation of custom objects' sets, namely groups of objects to track)
 - 'tutorial' - quick instructions including SMART concept, dashboard and sandbox features
- 
+
+</details>
+
 ##### 3.2 Creating models
+<details>
+
 - 'dashboard':
   - created model representing a Dataset 
   - created model representing a Core Object
   - registering the models in "admin.py"
 
+</details>
+
 ##### 3.3 Creating views
+<details>
+
 - 'auth_core': 
   - custom django generic class-based views (register, profile view, profile update)
 - 'dashboard':
-  - custom django generic class-based views (listview, detailview, CRUD pack) 
-  
+  - custom django functional views (dashboard, chart, filter and related functions) 
+- 'sandbox':
+  - custom django functional views (dataset, object, related CRUD functions and filters)
+- 'tutorial':
+  - simple index view
+
+</details>
+
 ##### 3.4 Creating templates
+<details>
+
 - 'auth_core': 
   - pack of auth templates (login, logout, password, profile, register - TO ADD BOOTSTRAP FORMS,TO CHECK PASSWORD - TBD)
 - 'dashboard':
-  - base_generic
-  - index
-  - core object listview, detailview, form, and CRUD pack 
-- 'dashboard': 
-  - TBD
-- 'sandbox':
-  - TBD
+  - base_generic template
+  - index (home page)
+  - dashboard page with includes (forms, object list, chart + CSS/JS)
+- 'sandbox': 
+  - sandbox page with includes (CRUD, form, list - for dataset and object appropriately + CSS/JS)
+- 'tutorial':
+  - tutorial page
+
+</details>
 
 ##### 3.5 Creating forms
+<details>
+
 - 'auth_core':
   - UserCreationForm (django's pre-defined model form)
 - 'dashboard':
-  - CoreObjectForm (custom model form)
+  - DashboardFilterForm (custom django form)
+- 'sandbox':
+  - DatasetModelForm (pure django model form)
+  - DatasetObjectModelForm (pure django model form)
+
+</details>
 
 ##### 3.6 Configuring urls
-- ''
-- index/
-- admin/
-- account/
-  - django's pre-defined links to login, logout, password reset ('django.contrib.auth.urls')
-  - custom links for register, view profile, update profile
-- app/
-  - core object list view, detail view, CRUD views
-- dashboard/ TBD
-- sandbox/ TBD
+<details>
 
-#### 3.7 Creating and configuring front-end files and scripts
-- installed required scripts, namely added it to the base template:
-  - Bootstrap
-  - jQuery
-  - CSS and JS scripts required by chosen Bootstrap design 
-- created 'static/' folders to keep static files
+- 'core': home page, admin page
+- 'auth_core': django's pre-defined links to login, logout, password reset ('django.contrib.auth.urls'), 
+custom links for register, view profile, update profile
+- 'dashboard': base dashboard page and 'filtered/' for filter results
+- 'sandbox': base sandobx page, CRUD for dataset and object appropriately, dataset filters
+- 'tutorial': tutorial page
+
+</details>
+
+#### 3.7 Configuring static files and scripts
+<details>
+
+- created 'static/' folders to keep static files for the whole project and for each app appropriately
+- added CSS/JS to the 
+  - base generic template: MDBootstrap, jQuery, Popper, Feather icons + feather.replace() command, 
+  Google Chart loader, custom JS for Messages timeout.
+  - dashboard template: Google Chart JS, custom CSS, custom Ajax scripts 
+  - sandbox template: custom Ajax scripts, feather.replace() command
+
+</details>
+
+</details>
 
 ***
-### 4. Developing business logic and appropriate Celery tasks
+### 4. Developing business logic
+<details>
+ 
+- SMART concept is hard-coded to COREOBJECT model, so that each object has approrpiate settings (current value, 
+priority, measure, time frame, responsible).
+- Each object would have one of three statuses based on simple pattern "Red-Orange-Green". Each object has its own 
+level of priority and current value set by user, so that after object creation/update the application sets status of 
+the object comparing current value with the priority. It is hard-coded by functional view at SANDBOX. 
+- SANDBOX page has custom filters (SEE OBJECTS, SHOW ALL OBJECTS). It is designed as jQuery/Ajax + JS + custom 
+functional views.
+- SANDBOX page has buttons to Create, Edit and Delete datasets and objects. It is designed approapriately as modals +
+ModelForms + jQuery/Ajax + JS + custom functional views returning JSON + HTML includes
+- DASHBOARD page has custom filters. It is designed as custom django form + jQuery/Ajax + JS + custom functional views 
+returning JSON + HTML includes.
+- DASHBOARD has Pie Chart that is re-drawn appropriately to filter applied. It is designed as jQuery/Ajax + JS + custom 
+functional views returning JSON + HTML includes
+
+</details>
 
 ***
 ### 5. Testing
+<details>
+TBD
+</details>
 
 ***
 ### 6. Implementing (deploy)
+<details>
+TBD
+</details>
 
 ***
 ### 7. Post-implementation checks
+<details>
+TBD
+</details>
