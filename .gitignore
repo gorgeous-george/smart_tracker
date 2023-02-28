@@ -23,7 +23,6 @@ tracker_core/db.sqlite3
 ##LOCAL DEV FILES
 
 
-
 # Backup files #
 *.bak
 
