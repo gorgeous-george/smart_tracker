@@ -1,5 +1,5 @@
 ***
-### 1. bug-0001 RESOLVED Feather icon is missed after ajax GET request
+### 1. bug-0001 Priority_LOW Status_RESOLVED - Feather icon is missed after ajax GET request
 
 ### BUG DESCRIPTION
 after submitting the modal form, the icons <span data-feather="edit" and "delete" are not rendered, and consequently are not shown on the website. 
@@ -77,7 +77,7 @@ def save_coreobject_form(request, form, template_name):
 </details>
 
 ***
-### 2. bug-0002 - dataset objects are not updated after dataset deletion
+### 2. bug-0002 Priority-LOW Status_OPEN - dataset objects are not updated after dataset deletion
 ### BUG DESCRIPTION
 If user deletes a dataset having related objects, these objects should be deleted as well. 
 There is a function that obtained updated list of objects and return it to browser to re-render objects table.
@@ -184,7 +184,7 @@ def reload_dataset_object_table(request):
 </details>
 
 ***
-### 3. bug-0003 - Objects table is reloaded ignoring cases when only one dataset is selected
+### 3. bug-0003 Status_OPEN Priority_LOW - Objects table is reloaded ignoring cases when only one dataset is selected
 ### BUG DESCRIPTION
 At Sandbox after dataset's creation/update/deletion, objects table is reloaded ignoring filters set at the 
 dataset table, for example when only one dataset is selected, it is expected to see objects related to this dataset only 
@@ -219,7 +219,7 @@ of this dataset only, such as it has shown before dataset has been updating/dele
 </details>
 
 ***
-### 4. bug-0004 - Button "Show objects" doesn't work after dataset updates/delete. Need to reload the whole page
+### 4. bug-0004 Status_OPEN Priority_LOW - Button "Show objects" doesn't work after dataset updates/delete. Need to reload the whole page
 ### BUG DESCRIPTION
 TBD
 
@@ -252,12 +252,71 @@ TBD
 </details>
 
 ***
-### 5. bug-0005 
+### 5. bug-0005 Priority_CRITICAL Status_OPEN - excessive DB queries at core pages 
 ### BUG DESCRIPTION
-Insufficient DB queries produce similar SQL requests to the database and decrease web-pages loading time 
+Insufficient SQL queries produce similar SQL requests to the database and decrease web-pages loading time 
 
 ### ROOT CAUSE
-Insufficient DB queries
+Insufficient SQL queries - see details below.
+
+### RESOLUTION
+Temporary resolution: set paginator limit up to 5 objects per page. 
+So that there always will be not more than 5 SQL queries to the DB per one page.
+
+Planned resolution steps:
+1. to analyse looped consequences of the duplicated SQL requests
+2. to fix appropriate DB queries and/or functions at appropriate views
+3. as alternative way - to implement cache methods 
+
+<details>
+  <summary>Details</summary>
+
+- Coreobject model has ForeignKey to Dataset model. While rendering coreobject table, the coreobject's field
+"dataset" is requested for each coreobject. It means 1 SQL query for each coreobject in the table. 
+
+- <img src="bug_0005_1_html_templates.png">
+- <img src="bug_0005_2_sandbox_sql_queries.png">
+- <img src="bug_0005_3_dashboard_sql_queries.png">
+
+```js
+```
+- html template
+```html
+see Screenshot #1
+```
+- dashboard.views
+```python
+def coreobject_list(request):
+    coreobjects = CoreObject.objects.all()
+    paginated_obj_list = coreobject_paginator(request, coreobjects)
+    chart_data = get_data_for_chart(coreobjects)
+    unique_dataset_names = Dataset.objects.all()
+    return render(request, 'dashboard.html', {
+        'paginated_obj_list': paginated_obj_list,
+        'chart_data': chart_data,
+        'unique_dataset_names': unique_dataset_names,
+    })
+```
+- sandbox.views
+```python
+def sandbox_index(request):
+    paginated_dataset_list = get_dataset_list(request)
+    paginated_object_list = get_object_list(request)
+    return render(request, 'sandbox.html', {
+        'paginated_dataset_list': paginated_dataset_list,
+        'paginated_object_list': paginated_object_list,
+    },)
+```
+
+</details>
+
+***
+### 6. bug-0006 Status_OPEN Priority_LOW - 
+### BUG DESCRIPTION
+TBD
+
+### ROOT CAUSE
+TBD
 
 ### RESOLUTION
 TBD
@@ -283,3 +342,5 @@ TBD
 
 ```
 </details>
+
+***
