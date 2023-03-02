@@ -9,14 +9,18 @@ from sandbox.views import (
     dataset_object_update,
     dataset_object_delete,
     reload_dataset_object_table,
+    dataset_delete_all,
     dataset_filter_object_table,
     dataset_show_all_objects,
+    dataset_starter_pack,
 )
 
 
 urlpatterns = [
     path('', sandbox_index, name='sandbox'),
     path('datasets/add/', dataset_create, name='dataset-add'),
+    path('datasets/starter_pack/', dataset_starter_pack, name='dataset-starter-pack'),
+    path('datasets/delete_all/', dataset_delete_all, name='dataset-delete-all'),
     path('datasets/<int:pk>/update/', dataset_update, name='dataset-update'),
     path('datasets/<int:pk>/delete/', dataset_delete, name='dataset-delete'),
     path('objects/add/', dataset_object_create, name='dataset-object-add'),

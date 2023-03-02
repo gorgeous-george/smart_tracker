@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from dashboard.models import CoreObject, Dataset
+from dashboard.models import CoreObject
 from dashboard.forms import DashboardFilterForm
 
 # todo: add a Class with @login_required and @permission_required decorators for all view functions in this module

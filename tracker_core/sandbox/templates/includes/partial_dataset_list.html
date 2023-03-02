@@ -24,11 +24,12 @@
 </tr>
 {% empty %}
 <tr>
-    <td colspan="8" class="text-center bg-warning">
+    <td colspan="8" class="text-center bg-warning js-dataset-starter-pack">
         There are no datasets.<br>
         <button type="button"
-                class="btn btn-sm btn-success js-create-dataset"
-                data-url="{% url 'dataset-add' %}">
+                class="btn btn-sm btn-success"
+                onclick="location.href='{% url 'dataset-starter-pack' %}'"
+        >
             Starter Pack
         </button>
     </td>

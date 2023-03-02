@@ -70,6 +70,17 @@ $(function () {
     });
   };
 
+  var delete_all = function () {
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      success: function () {
+        window.location.reload();
+      }
+    });
+  };
+
 
   /* Binding */
 
@@ -93,5 +104,7 @@ $(function () {
   // Clear filter, i.e. show all objects
   $(".js-show-all-objects").click(get_dataset_objects);
 
+  //Delete All
+  $(".js-delete-all").click(delete_all);
 
 });

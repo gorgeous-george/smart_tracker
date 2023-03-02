@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 from sandbox.forms import DatasetModelForm, DatasetObjectModelForm
 from dashboard.models import CoreObject, Dataset
@@ -244,3 +245,26 @@ def dataset_object_delete(request, pk):
         context = {'coreobject': coreobject}
         data['html_form'] = render_to_string('includes/partial_dataset_object_delete.html', context, request=request)
     return JsonResponse(data)
+
+
+def dataset_starter_pack(request):
+    """
+    Function that handles button "Starter Pack".
+    Its purpose is to fill the DB with hard-coded pack of dataset and objects.
+    """
+    from .fixtures import starter_pack
+    starter_pack.starter_datasets(request)
+    starter_pack.starter_objects(request)
+    messages.add_message(request, messages.SUCCESS, 'Starter pack was created')
+    return HttpResponseRedirect(reverse('sandbox'))
+
+
+def dataset_delete_all(request):
+    """
+    Function that handles button "Delete ALL".
+    Its purpose is to delete all datasets and objects from the database.
+    """
+    Dataset.objects.all().delete()
+    CoreObject.objects.all().delete()
+    messages.add_message(request, messages.SUCCESS, 'Database was cleaned')
+    return HttpResponseRedirect(reverse('sandbox'))
