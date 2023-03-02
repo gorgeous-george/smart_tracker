@@ -39,9 +39,9 @@
       </th>
       <th scope="col" class="col-2">
         <button type="button"
-                class="btn btn-sm js-show-all-objects"
-                data-url="{% url 'dataset-object-all' %}">
-            Show all objects
+                class="btn btn-sm btn-danger js-delete-all"
+                data-url="{% url 'dataset-delete-all' %}">
+            Delete all
         </button><p></p>
       </th>
       <th scope="col" class="col-5"></th>
@@ -93,10 +93,16 @@
                 data-url="{% url 'dataset-object-add' %}">
           <span data-feather="plus-square" class="align-text-bottom"></span>
           Add object
-        </button>
+        </button><p></p>
       </th>
       <th scope="col" class="col-1"></th>
-      <th scope="col" class="col-2"></th>
+      <th scope="col" class="col-2">
+        <button type="button"
+                class="btn btn-sm js-show-all-objects"
+                data-url="{% url 'dataset-object-all' %}">
+            Clear Filters
+        </button><p></p>
+      </th>
       <th scope="col" class="col-1"></th>
       <th scope="col" class="col-1"></th>
       <th scope="col" class="col-2"></th>
