@@ -21,9 +21,6 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'assets/css/base_generic.css' %}">
 
-
-
-
     {% block extra_css %}
     {% endblock extra_css%}
 
@@ -55,6 +52,39 @@
                  placeholder="{% block placeholder %}{% endblock placeholder %}"
                  aria-label="Search">
       </div>
+
+        <div class="navbar-nav">
+            <!-- Google Translate API element -->
+            <div id="google_translate_element"></div>
+            <!-- Google Translate API scripts-->
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement(
+                  {
+                  pageLanguage: 'en',
+                  layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                  },
+                  'google_translate_element');}
+            </script>
+            <script type="text/javascript"
+                    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+            </script>
+            <style>
+                div#google_translate_element div.goog-te-gadget-simple {
+                    background-color: transparent;
+                    border: none;
+                }
+                div#google_translate_element div.goog-te-gadget-simple .goog-te-gadget-icon {
+                    display: none;
+                }
+                div#google_translate_element div.goog-te-gadget-simple .VIpgJd-ZVi9od-xl07Ob-lTBxed {
+                    color: rgb(118,118,118);
+                    font-family: "Sans";
+                    font-size: 14px;
+                }
+            </style>
+        </div>
+
       {% if user.is_authenticated %}
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap float-end">
@@ -133,29 +163,7 @@
             </li>
             <li class="nav-item">
                 <div class="nav-link">
-                <!-- Google Translate API element -->
-                <div id="google_translate_element"></div>
-                <!-- Google Translate API scripts-->
-                <script type="text/javascript">
-                function googleTranslateElementInit() {
-                  new google.translate.TranslateElement(
-                      {
-                      pageLanguage: 'en',
-                      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-                      },
-                      'google_translate_element');}
-                </script>
-                <script type="text/javascript"
-                        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-                </script>
-                <style>
-                    div#google_translate_element div.goog-te-gadget-simple {
-                        font-size: 15px;
-                        font-family: "Roboto, sans-serif";
-                        background-color: #fbfbfb;
-                        border: none;
-                    }
-                </style>
+
                 </div>
             </li>
           </ul>
@@ -208,8 +216,6 @@
     <!-- Replace all elements that have a data-feather attribute with SVG markup
     corresponding to the element's data-feather attribute value. -->
     <script>feather.replace()</script>
-
-
 
 </body>
 </html>
