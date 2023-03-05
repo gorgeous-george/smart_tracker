@@ -157,4 +157,4 @@ class CoreObject(models.Model):
         return reverse('coreobject-detail', kwargs={'pk': self.pk})
 
     class Meta:
-        ordering = ['status', 'dataset', 'responsible', 'name']
+        ordering = ['-status', 'dataset', 'name', 'responsible']
