@@ -122,7 +122,7 @@ def starter_objects(request):
                    responsible=request.user,
                    ),
         CoreObject(name="Pay regular bills",
-                   description="Pay Golan, Lifecell, Luckynet",
+                   description="Pay mobile cell and internet providers",
                    dataset_id=Dataset.objects.get(dataset="UTILITIES").id,
                    current_value="Green",
                    priority="High",
