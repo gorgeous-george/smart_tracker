@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'dashboard',
     'sandbox',
     'tutorial',
+
+    'rest_framework_app',
 ]
 
 # only for development environment
@@ -162,6 +164,18 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Settings of Django Rest Framework application
+REST_FRAMEWORK = {
+    # Pagination settings
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+}
 
 # Auth settings
 LOGIN_REDIRECT_URL = "index"
