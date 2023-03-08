@@ -9,7 +9,7 @@ Additional features:
 - Authentication/Authorization
 - User permissions (currently in development)
 - Interactive JQuery/Ajax forms
-- API returning datasets/objects (currently in development)
+- API returning datasets/objects
 - Admin tools (Flower, Pgadmin) (currently in development)
 
 

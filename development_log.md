@@ -272,9 +272,9 @@ etc
 - 'auth_core': 
   - custom django generic class-based views (register, profile view, profile update)
 - 'dashboard':
-  - custom django functional views (dashboard, chart, filter and related functions) 
+  - custom django functional views (dashboard table, chart, filter, buttons) 
 - 'sandbox':
-  - custom django functional views (dataset, object, related CRUD functions and filters)
+  - custom django functional views (dataset table, object table, related CRUD functions, buttons and filters)
 - 'tutorial':
   - simple index view
 
@@ -316,7 +316,7 @@ etc
 - 'auth_core': django's pre-defined links to login, logout, password reset ('django.contrib.auth.urls'), 
 custom links for register, view profile, update profile
 - 'dashboard': base dashboard page and 'filtered/' for filter results
-- 'sandbox': base sandobx page, CRUD for dataset and object appropriately, dataset filters
+- 'sandbox': base sandbox page, CRUD for dataset and object appropriately, dataset filters
 - 'tutorial': tutorial page
 
 </details>
@@ -333,21 +333,60 @@ custom links for register, view profile, update profile
 
 </details>
 
+#### 3.8 Configuring local Django REST Framework application
+
+<details>
+
+- installed required packages into project's virtual environment.
+```
+pip install djangorestframework
+pip install markdown       # Markdown support for the browsable API.
+pip install django-filter  # Filtering support
+```
+- created custom DRF application.
+```
+./manage.py startapp rest_framework_app --settings=core.settings_local_sqlite_non-docker
+```
+- configured 'settings.py'
+```
+INSTALLED_APPS = [
+    ...
+    'rest_framework_app',
+]
+REST_FRAMEWORK = {
+    # Pagination settings
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+}
+```
+- created 'serializers.py': added serializers for User, Dataset and CoreObject models.
+- 'views.py': added ViewSets using User, Dataset and CoreObject serializer. 
+- 'core.urls.py': added 'include' referring to rest_framework_app.urls.
+- 'urls.py': added urlpatterns, registered routes for User, Dataset and CoreObject ViewSets.
+
+</details>
+
 </details>
 
 ***
 ### 4. Developing business logic
 <details>
  
-- SMART concept is hard-coded to COREOBJECT model, so that each object has approrpiate settings (current value, 
+- SMART concept is hard-coded to COREOBJECT model, so that each object has appropriate settings (current value, 
 priority, measure, time frame, responsible).
 - Each object would have one of three statuses based on simple pattern "Red-Orange-Green". Each object has its own 
 level of priority and current value set by user, so that after object creation/update the application sets status of 
 the object comparing current value with the priority. It is hard-coded by functional view at SANDBOX. 
 - SANDBOX page has custom filters (SEE OBJECTS, SHOW ALL OBJECTS). It is designed as jQuery/Ajax + JS + custom 
 functional views.
-- SANDBOX page has buttons to Create, Edit and Delete datasets and objects. It is designed approapriately as modals +
-ModelForms + jQuery/Ajax + JS + custom functional views returning JSON + HTML includes
+- SANDBOX page has buttons to Create, Edit and Delete datasets and objects. It is designed appropriately as modals +
+ModelForms + jQuery/Ajax + JS + custom functional views returning JSON + HTML includes.
+- SANDBOX page has buttons to Delete all data and to create Starter pack of datasets/objects.
 - DASHBOARD page has custom filters. It is designed as custom django form + jQuery/Ajax + JS + custom functional views 
 returning JSON + HTML includes.
 - DASHBOARD has Pie Chart that is re-drawn appropriately to filter applied. It is designed as jQuery/Ajax + JS + custom 
