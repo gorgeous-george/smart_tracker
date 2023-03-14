@@ -3,10 +3,27 @@ from django.forms import CheckboxSelectMultiple, SelectMultiple
 
 from dashboard.models import Dataset
 
-qs = Dataset.objects.all()
-dataset_choices = [('*', 'All')]
-for dataset in qs:
-    dataset_choices.append((str(dataset.id), str(dataset.dataset)))
+try:
+    '''
+    At the very first run of the docker-compose service "tracker_core" this file is being executed as well, 
+    however migrations are not applied yet. So that Dataset queryset can not be obtained.
+    '''
+    qs = Dataset.objects.all()
+    dataset_choices = [('*', 'All')]
+    for dataset in qs:
+        dataset_choices.append((str(dataset.id), str(dataset.dataset)))
+except Exception:
+    '''
+    For the first run when migrations are not applied, we set empty list for dataset_choices just to avoid an error.
+    After migrations applied and server restarted block "try" will work appropriately.
+    '''
+    print("----------------------------------------------------")
+    print("WARNING! This is the very first run of Django Server")
+    print("You need directly connect to 'tracker_core' container and run migrations.")
+    print("You may want to create superuser as well.")
+    print("After that you have to restart the server.")
+    print("----------------------------------------------------")
+    dataset_choices = []
 
 status_choices = [
     ('*', 'All'),

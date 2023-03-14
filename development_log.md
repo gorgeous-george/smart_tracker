@@ -168,7 +168,7 @@ try to check the docker service's status first and then restart the service if n
 sudo service docker status
 sudo service docker restart
 ```
-
+  
 </details>
 
 ***
@@ -223,6 +223,10 @@ only for dev:
 
 - tracker_core
 - db_core
+- pgadmin
+
+- networks
+- volumes
 
 </details>
 
@@ -286,7 +290,7 @@ etc
 - 'auth_core': 
   - pack of auth templates (login, logout, password, profile, register - TO ADD BOOTSTRAP FORMS,TO CHECK PASSWORD - TBD)
 - 'dashboard':
-  - base_generic template
+  - base_generic template (navbar, sidebar)
   - index (home page)
   - dashboard page with includes (forms, object list, chart + CSS/JS)
 - 'sandbox': 
@@ -302,7 +306,8 @@ etc
 - 'auth_core':
   - UserCreationForm (django's pre-defined model form)
 - 'dashboard':
-  - DashboardFilterForm (custom django form)
+  - DashboardFilterForm (custom django form). This form uses Dataset queryset so that special try-except logic
+  is designed to avoid errors during the very first start before migrations applied so that queryset is not available.
 - 'sandbox':
   - DatasetModelForm (pure django model form)
   - DatasetObjectModelForm (pure django model form)
@@ -312,7 +317,7 @@ etc
 ##### 3.6 Configuring urls
 <details>
 
-- 'core': home page, admin page
+- 'core': index, admin, API
 - 'auth_core': django's pre-defined links to login, logout, password reset ('django.contrib.auth.urls'), 
 custom links for register, view profile, update profile
 - 'dashboard': base dashboard page and 'filtered/' for filter results
@@ -333,7 +338,7 @@ custom links for register, view profile, update profile
 
 </details>
 
-#### 3.8 Configuring local Django REST Framework application
+#### 3.8 Configuring Django REST Framework application as a separate module of main Django application
 
 <details>
 
