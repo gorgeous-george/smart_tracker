@@ -30,10 +30,24 @@ services:
       - db_core_volume:/var/lib/postgresql/data
     networks:
       - core_db_network
-    expose:
-      - 5432
+    ports:
+      - "5432:5432"
     env_file:
       - .core.env
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    networks:
+      - core_db_network
+    ports:
+      - 8080:80
+    depends_on:
+      - db_core
+
 
 networks:
   core_db_network:

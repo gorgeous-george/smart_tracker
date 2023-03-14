@@ -19,6 +19,7 @@ def starter_datasets(request):
                 owner=request.user),
     ])
 
+
 def starter_objects(request):
     c = CoreObject.objects.bulk_create([
         CoreObject(name="Water",
@@ -76,13 +77,13 @@ def starter_objects(request):
                    dataset_id=Dataset.objects.get(dataset="MONTHLY TASK").id,
                    current_value="Green",
                    priority="High",
-                   measure_description="G-Performing tests/interview, O-Proactively searching, R-Not searched",
+                   measure_description="G-Made tests/interview, O-Proactively searching, R-Not searched",
                    status="Green",
                    timeframe="Month",
                    responsible=request.user,
                    ),
         CoreObject(name="Physical Training",
-                   description="Morning exercises, gymnastic, stretching, outdoor activity",
+                   description="Morning exercises,gymnastic,stretching,outdoor activity",
                    dataset_id=Dataset.objects.get(dataset="DAY ROUTINE").id,
                    current_value="Green",
                    priority="High",
