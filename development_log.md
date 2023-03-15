@@ -221,9 +221,26 @@ only for dev:
 #### 2.7 Configuring the microservices as docker containers
 <details>
 
-- tracker_core
-- db_core
-- pgadmin
+- core:
+  - build image from the 'tracker_core' django project (it also includes DRF)
+  - added ports, networks, volumes, dependencies,
+  - added env. file
+- db_core:
+  - pull postgresql image from dockerhub, 
+  - added ports, networks, volumes
+  - added DB credentials to env. file (HOST, NAME, USER, PASS),
+  - added DB settings and credentials to django settings.py.
+- pgadmin - pull pgadmin image from dockerhub
+- redis:
+  - pull image from docker-hub,
+  - added ports, networks, volumes. 
+- celery:
+  - installed celery and "celery[redis]", added to requirements.txt,
+  - added 'celery.py' to django core folder, 
+  - updated '__init__.py' in django core folder,
+  - added broker_url and result_backend to django 'settings.py',
+  - created 'tasks.py' in django 'dashboard' app ,
+  - build image based on the 'tracker_core' django project.
 
 - networks
 - volumes

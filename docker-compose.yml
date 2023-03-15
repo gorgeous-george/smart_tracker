@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  core:
+  core: &core
     container_name: tracker_core
     build:
       context: .
@@ -9,11 +9,12 @@ services:
     volumes:
       - ./tracker_core:/app
     networks:
-      - core_db_network
+      - db_core_network
     ports:
       - "8000:8000"
     depends_on:
       - db_core
+      - redis
     env_file:
       - .core.env
     restart: on-failure
@@ -29,7 +30,7 @@ services:
     volumes:
       - db_core_volume:/var/lib/postgresql/data
     networks:
-      - core_db_network
+      - db_core_network
     ports:
       - "5432:5432"
     env_file:
@@ -42,15 +43,51 @@ services:
       PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
       PGADMIN_DEFAULT_PASSWORD: pgadmin
     networks:
-      - core_db_network
+      - db_core_network
     ports:
-      - 8080:80
+      - "8080:80"
     depends_on:
       - db_core
 
+  redis:
+    container_name: redis
+    image: redis:7.0.9-alpine
+    restart: on-failure
+    networks:
+      - db_core_network
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/var/lib/redis/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "ping"]
+
+  celery:
+    <<: *core
+    container_name: celery
+    restart: always
+    depends_on:
+      - db_core
+      - core
+      - redis
+    expose: []
+    ports: []
+    networks:
+      - db_core_network
+    environment:
+      C_FORCE_ROOT: 'true'
+      CHECK_WEB: 'true'
+    command: celery -A core worker -l info
+    healthcheck:
+      test: ["CMD-SHELL", "ps ax", "|" ,"grep -v grep", "|" ,"grep celery",  "||", "exit 1"]
+      interval: 1m
+      timeout: 5s
+      retries: 2
+
 
 networks:
-  core_db_network:
+  db_core_network:
 
 volumes:
   db_core_volume:
+  redis:
