@@ -23,6 +23,8 @@ except Exception:
     print("You may want to create superuser as well.")
     print("After that you have to restart the server.")
     print("----------------------------------------------------")
+    print("Ignore this message if raised by CELERY service")
+    print("----------------------------------------------------")
     dataset_choices = []
 
 status_choices = [
