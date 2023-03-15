@@ -60,4 +60,20 @@ functional views returning JSON + HTML includes
 
 ## Quick start
 
-TBD
+Add ".core.env" file to the project's root directory:
+
+### tracker_core
+- DJANGO_SECRET_KEY=
+- DJANGO_SETTINGS_MODULE=
+- PYTHONUNBUFFERED=
+
+- DB_NAME=
+- DB_USER=
+- DB_PASSWORD=
+- DB_HOST=
+- DB_PORT=
+
+### db_core
+- POSTGRES_USER=
+- POSTGRES_PASSWORD=
+- POSTGRES_DB=
