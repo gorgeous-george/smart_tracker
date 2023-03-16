@@ -222,25 +222,35 @@ only for dev:
 <details>
 
 - core:
-  - build image from the 'tracker_core' django project (it also includes DRF)
+  - build image from the 'tracker_core' django project (it also includes DRF),
   - added ports, networks, volumes, dependencies,
-  - added env. file
+  - added env. file.
 - db_core:
   - pull postgresql image from dockerhub, 
-  - added ports, networks, volumes
+  - added ports, networks, volumes,
   - added DB credentials to env. file (HOST, NAME, USER, PASS),
   - added DB settings and credentials to django settings.py.
-- pgadmin - pull pgadmin image from dockerhub
+- pgadmin:
+  - pull pgadmin image from dockerhub.
 - redis:
   - pull image from docker-hub,
-  - added ports, networks, volumes. 
+  - added ports, networks, volumes,
+  - added appropriate data to "settings.py" to use redis as celery broker and cache,
+  - added redis and django-redis to requirements.txt.
 - celery:
-  - installed celery and "celery[redis]", added to requirements.txt,
+  - added celery and "celery[redis]" to requirements.txt,
   - added 'celery.py' to django core folder, 
   - updated '__init__.py' in django core folder,
   - added broker_url and result_backend to django 'settings.py',
-  - created 'tasks.py' in django 'dashboard' app ,
+  - created 'tasks.py' in django 'dashboard' app,
   - build image based on the 'tracker_core' django project.
+- flower:
+  - pull image from dockerhub,
+  - specified environment variables,
+  - specified command to run flower.
+- mailhog
+  - pull image from dockerhub,
+  - added email backend, host, port, user, password to settings.py.
 
 - networks
 - volumes

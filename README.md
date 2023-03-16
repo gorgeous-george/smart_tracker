@@ -3,15 +3,16 @@
 SMART Tracker engine provides user with the following features:
 1. Create, edit, delete the datasets containing objects/tasks/goals/resources.
 2. Monitor the fulfillment/availability of the objects by descriptive dashboard, filters, and interactive chart.
-3. Receive email notifications and summary reports (currently in development)
+3. Receive email notifications and summary reports
 
 Additional features:
 - Authentication/Authorization
 - User permissions (currently in development)
 - Interactive JQuery/Ajax forms
 - API returning datasets/objects
-- Admin tools (Flower, Pgadmin) (currently in development)
-
+- Celery tasks
+- Redis Cache
+- Admin web-tools: Flower, Pgadmin, Mailhog
 
 ## App description
 
@@ -52,17 +53,22 @@ functional views returning JSON + HTML includes
 - Python
 - Docker-Compose
 - Django
-- Django REST
+- Django Rest Framework
 - PostgreSQL
 - jQuery/Ajax
 - MDBootstrap
 - HTML/CSS/JS
+- Celery
+- Redis
+- Flower
+- Mailhog
+- Swagger
 
 ## Quick start
 
 Add ".core.env" file to the project's root directory:
 
-### tracker_core
+#### tracker_core
 - DJANGO_SECRET_KEY=
 - DJANGO_SETTINGS_MODULE=
 - PYTHONUNBUFFERED=
@@ -73,7 +79,7 @@ Add ".core.env" file to the project's root directory:
 - DB_HOST=
 - DB_PORT=
 
-### db_core
+#### db_core
 - POSTGRES_USER=
 - POSTGRES_PASSWORD=
 - POSTGRES_DB=
