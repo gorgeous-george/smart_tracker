@@ -180,9 +180,30 @@ REST_FRAMEWORK = {
 # Auth settings
 LOGIN_REDIRECT_URL = "index"
 
+# Cache settings - Redis is used
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+CACHE_TTL = 60 * 15  # 15 minutes
+
 # Celery settings
 CELERY_BROKER_URL = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Mailhog settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "mailhog"
+EMAIL_PORT = "1025"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+EMAIL_USE_SSL = False

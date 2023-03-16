@@ -1,6 +1,8 @@
 version: "3.8"
 
 services:
+
+  # django web application, API django rest framework
   core: &core
     container_name: tracker_core
     build:
@@ -24,6 +26,7 @@ services:
       timeout: 5s
       retries: 2
 
+  # application database - postgreSQL
   db_core:
     container_name: db_core
     image: postgres:14-alpine
@@ -36,6 +39,7 @@ services:
     env_file:
       - .core.env
 
+  # postgreSQL db management tool
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -49,6 +53,7 @@ services:
     depends_on:
       - db_core
 
+  # redis: celery broker, cached views
   redis:
     container_name: redis
     image: redis:7.0.9-alpine
@@ -62,7 +67,9 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "-h", "localhost", "ping"]
 
+  # celery: worker and beat scheduler
   celery:
+    # inherits django web application image
     <<: *core
     container_name: celery
     restart: always
@@ -77,12 +84,40 @@ services:
     environment:
       C_FORCE_ROOT: 'true'
       CHECK_WEB: 'true'
-    command: celery -A core worker -l info
+    command: celery -A core worker -l info -B
     healthcheck:
       test: ["CMD-SHELL", "ps ax", "|" ,"grep -v grep", "|" ,"grep celery",  "||", "exit 1"]
       interval: 1m
       timeout: 5s
       retries: 2
+
+  # tool for monitoring and administrating Celery clusters
+  flower:
+    container_name: flower
+    image: mher/flower
+    ports:
+      - "5555:5555"
+    environment:
+      - BROKER_URL=redis://redis:6379
+      - BROKER_API=http://redis:6379/api
+    depends_on:
+      - celery
+      - redis
+      - db_core
+    networks:
+     - db_core_network
+    command: ['celery', 'flower', '--port=5555']
+
+  # email-testing tool with a fake SMTP server underneath
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # MailHog web interface
+    networks:
+     - db_core_network
 
 
 networks:

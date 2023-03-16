@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.views.decorators.cache import cache_page
 
 from dashboard.models import CoreObject
 from dashboard.forms import DashboardFilterForm
@@ -30,6 +31,7 @@ def test(request):
     return render(request, 'test.html', {'form': form})
 
 
+@cache_page(60 * 60)
 def index(request):
     """
     Base view function for the home page.
