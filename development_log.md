@@ -210,6 +210,8 @@ $ \?    # help
 
 - flake8
 - widget-tweaks
+- drf_spectacular
+
 only for dev:
 - django-debug-toolbar
 - django-extensions
@@ -400,6 +402,7 @@ REST_FRAMEWORK = {
 - 'views.py': added ViewSets using User, Dataset and CoreObject serializer. 
 - 'core.urls.py': added 'include' referring to rest_framework_app.urls.
 - 'urls.py': added urlpatterns, registered routes for User, Dataset and CoreObject ViewSets.
+- finally, installed drf-spectacular, updated "settings.py" (https://github.com/tfranzel/drf-spectacular#installation)
 
 </details>
 

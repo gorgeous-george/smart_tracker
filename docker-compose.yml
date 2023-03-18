@@ -43,9 +43,8 @@ services:
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
-      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    env_file:
+      - .core.env
     networks:
       - db_core_network
     ports:

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'tutorial',
 
     'rest_framework_app',
+    'drf_spectacular',
 ]
 
 # only for development environment
@@ -175,6 +176,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+    # Register our drf-spectacular AutoSchema with DRF.
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# Settings of drf-spectacular application
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Smart Tracker API',
+    'DESCRIPTION': 'https://github.com/gorgeous-george/smart_tracker',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 # Auth settings
@@ -184,7 +195,7 @@ LOGIN_REDIRECT_URL = "index"
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/0',
+        'LOCATION': 'redis://redis:6379',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
