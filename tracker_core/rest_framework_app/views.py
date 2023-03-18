@@ -6,6 +6,7 @@ from rest_framework import mixins, status, viewsets, permissions
 
 from rest_framework_app.serializers import DatasetSerializer, CoreObjectSerializer, UserSerializer
 
+
 """
 Currently active user model is imported for representing clients. 
 This method will return default django User model or the custom user model if one would be specified.

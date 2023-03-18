@@ -9,10 +9,11 @@ Additional features:
 - Authentication/Authorization
 - User permissions (currently in development)
 - Interactive JQuery/Ajax forms
-- API returning datasets/objects
-- Celery tasks
+- API returning users/datasets/objects, swagger/redoc schemas
+- Celery/Redis, Flower
 - Redis Cache
-- Admin web-tools: Flower, Pgadmin, Mailhog
+- Pgadmin
+- Mailhog
 
 ## App description
 
