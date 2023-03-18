@@ -17,6 +17,8 @@ Additional features:
 
 ## App description
 
+<details>
+
 - The SMART stands for Specific, Measurable, Achievable, Relevant, and Time-Bound. Defining these parameters as they 
 pertain to your goal helps ensure that your objectives are attainable within a certain time frame.
 
@@ -26,7 +28,11 @@ supplied, cleaned and paid. Each status is monitored and represented by chart.
 - You can start with pre-defined datasets, or create your own! Feel free to use our SMART engine to track literally 
 any thing.
 
+</details>
+
 ## Common logic
+
+<details>
 
 - User receives a short tutorial describing SMART concept and main application modules: SANDBOX and DASHBOARD.
 - SMART concept is hard-coded to COREOBJECT model, so that each object has appropriate settings (current value, 
@@ -49,25 +55,30 @@ django form + jQuery/Ajax + JS + custom functional views returning JSON + HTML i
 functional views returning JSON + HTML includes
 <img src="tracker_core/static/dashboard.png">
 
+</details>
+
 ## Technology stack
 
 - Python
 - Docker-Compose
 - Django
-- Django Rest Framework
-- PostgreSQL
 - jQuery/Ajax
 - MDBootstrap
 - HTML/CSS/JS
+- Django Rest Framework
+- drf-spectacular
+- PostgreSQL
+- pgadmin
 - Celery
 - Redis
 - Flower
 - Mailhog
-- Swagger
 
 ## Quick start
 
 Add ".core.env" file to the project's root directory:
+
+<details>
 
 #### tracker_core
 - DJANGO_SECRET_KEY=
@@ -84,3 +95,10 @@ Add ".core.env" file to the project's root directory:
 - POSTGRES_USER=
 - POSTGRES_PASSWORD=
 - POSTGRES_DB=
+
+#### pgadmin
+
+- PGADMIN_DEFAULT_EMAIL= 
+- PGADMIN_DEFAULT_PASSWORD=
+
+</details>
