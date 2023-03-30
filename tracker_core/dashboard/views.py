@@ -31,7 +31,6 @@ def test(request):
     return render(request, 'test.html', {'form': form})
 
 
-@cache_page(60 * 60)
 def index(request):
     """
     Base view function for the home page.
